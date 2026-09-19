@@ -163,7 +163,6 @@ pyparsing==3.3.2
 PyPDF2==3.0.1
 pypdfium2==5.12.1
 pyperclip==1.11.0
-pypiwin32==223
 PyRect==0.2.0
 PyScreeze==1.0.1
 pyserial==3.5
