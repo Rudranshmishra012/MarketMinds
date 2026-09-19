@@ -1,0 +1,25 @@
+Farmer_ID,Farmer_Name,Crop,Quantity,Quality,Location
+F001,Ram Kumar,Wheat,15,Grade A,Delhi
+F002,Suresh Yadav,Wheat,20,Grade B,Jaipur
+F003,Meena Devi,Wheat,50,Grade C,Greater Noida
+F004,Anil Sharma,Tomato,10,Grade B,Noida
+F005,Vijay Singh,Potato,50,Grade A,Mathura
+F006,Kavita Rani,Onion,15,Grade C,Bhopal
+F007,Rakesh Chaudhary,Onion,25,Grade A,Kanpur
+F008,Sunita Kumari,Wheat,15,Grade A,Bhopal
+F009,Mahesh Prajapati,Rice,10,Grade A,Aligarh
+F010,Geeta Devi,Rice,50,Grade A,Delhi
+F011,Ramesh Verma,Onion,15,Grade B,Bhopal
+F012,Pooja Sharma,Wheat,15,Grade B,Greater Noida
+F013,Ashok Kumar,Onion,25,Grade A,Jaipur
+F014,Radha Rani,Potato,50,Grade B,Kanpur
+F015,Sanjay Tiwari,Wheat,40,Grade C,Ghaziabad
+F016,Lakshmi Devi,Wheat,15,Grade A,Kanpur
+F017,Naresh Gupta,Onion,10,Grade C,Noida
+F018,Kamla Devi,Rice,10,Grade C,Lucknow
+F019,Deepak Rathore,Tomato,10,Grade C,Bhopal
+F020,Sarita Devi,Rice,50,Grade C,Agra
+F021,Manoj Kumar,Tomato,30,Grade A,Agra
+F022,Usha Rani,Tomato,30,Grade A,Aligarh
+F023,Vinod Singh,Onion,25,Grade A,Meerut
+F024,Rekha Devi,Onion,30,Grade C,Greater Noida

@@ -1,0 +1,425 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}
+  {% if language == 'Hindi' %}
+    खोज इतिहास - MarketMinds
+  {% else %}
+    Search History - MarketMinds
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{# ================= TRANSLATION DICTIONARIES ================= #}
+
+{% set crop_names = {
+  'Tomato':'टमाटर',
+  'Onion':'प्याज़',
+  'Potato':'आलू',
+  'Wheat':'गेहूं',
+  'Rice':'चावल',
+  'Maize':'मक्का',
+  'Cotton':'कपास',
+  'Sugarcane':'गन्ना',
+  'Mustard':'सरसों',
+  'Soybean':'सोयाबीन',
+  'Peas':'मटर',
+  'Carrot':'गाजर',
+  'Cabbage':'पत्तागोभी',
+  'Cauliflower':'फूलगोभी'
+} %}
+
+
+{% set quality_names = {
+  'Grade A':'ग्रेड A',
+  'Grade B':'ग्रेड B',
+  'Grade C':'ग्रेड C',
+  'Premium':'प्रीमियम',
+  'Standard':'मानक',
+  'Average':'औसत',
+  'Good':'अच्छी',
+  'Poor':'निम्न'
+} %}
+
+
+{# ================= MARKET TRANSLATIONS ================= #}
+
+{% set market_names = {
+  'Agra Mandi':'आगरा मंडी',
+  'Delhi Azadpur Mandi':'दिल्ली आज़ादपुर मंडी',
+  'Azadpur Mandi':'आज़ादपुर मंडी',
+  'Lucknow Mandi':'लखनऊ मंडी',
+  'Jaipur Mandi':'जयपुर मंडी',
+  'Kanpur Mandi':'कानपुर मंडी',
+  'Ghazipur Mandi':'गाज़ीपुर मंडी',
+  'Khurja Mandi':'खुर्जा मंडी',
+  'Noida Mandi':'नोएडा मंडी',
+  'Greater Noida Mandi':'ग्रेटर नोएडा मंडी',
+  'Mathura Mandi':'मथुरा मंडी',
+  'Bhopal Mandi':'भोपाल मंडी',
+  'Meerut Mandi':'मेरठ मंडी',
+  'Gautam Buddh Nagar Mandi':'गौतम बुद्ध नगर मंडी'
+} %}
+
+
+<div class="page-header">
+
+  <h1>
+
+    {% if language == 'Hindi' %}
+      मेरा खोज इतिहास
+    {% else %}
+      My Search History
+    {% endif %}
+
+  </h1>
+
+
+  <p>
+
+    {% if language == 'Hindi' %}
+
+      आपके द्वारा की गई प्रत्येक फसल खोज और उसके लिए तैयार की गई सिफारिश।
+      यह जानकारी केवल आपको दिखाई देती है।
+
+    {% else %}
+
+      Every crop search you've run, and the recommendation generated for it.
+      Only visible to you.
+
+    {% endif %}
+
+  </p>
+
+</div>
+
+
+{% if searches %}
+
+<div class="table-wrap">
+
+  <table>
+
+    <thead>
+
+      <tr>
+
+        <!-- DATE -->
+
+        <th>
+
+          {% if language == 'Hindi' %}
+            दिनांक
+          {% else %}
+            Date
+          {% endif %}
+
+        </th>
+
+
+        <!-- CROP -->
+
+        <th>
+
+          {% if language == 'Hindi' %}
+            फसल
+          {% else %}
+            Crop
+          {% endif %}
+
+        </th>
+
+
+        <!-- QUANTITY -->
+
+        <th>
+
+          {% if language == 'Hindi' %}
+            मात्रा
+          {% else %}
+            Quantity
+          {% endif %}
+
+        </th>
+
+
+        <!-- QUALITY -->
+
+        <th>
+
+          {% if language == 'Hindi' %}
+            गुणवत्ता
+          {% else %}
+            Quality
+          {% endif %}
+
+        </th>
+
+
+        <!-- MARKET -->
+
+        <th>
+
+          {% if language == 'Hindi' %}
+
+            अनुशंसित बाज़ार
+
+          {% else %}
+
+            Recommended Market
+
+          {% endif %}
+
+        </th>
+
+
+        <!-- PROFIT -->
+
+        <th>
+
+          {% if language == 'Hindi' %}
+
+            अपेक्षित शुद्ध लाभ
+
+          {% else %}
+
+            Expected Net Profit
+
+          {% endif %}
+
+        </th>
+
+
+        <!-- DECISION -->
+
+        <th>
+
+          {% if language == 'Hindi' %}
+            निर्णय
+          {% else %}
+            Decision
+          {% endif %}
+
+        </th>
+
+      </tr>
+
+    </thead>
+
+
+    <tbody>
+
+      {% for s in searches %}
+
+      <tr>
+
+        <!-- ================= DATE ================= -->
+
+        <td>
+
+          {{ s.created_at.strftime('%d %b %Y, %I:%M %p') }}
+
+        </td>
+
+
+        <!-- ================= CROP ================= -->
+
+        <td>
+
+          {% if language == 'Hindi' %}
+
+            {{ crop_names.get(s.crop, s.crop) }}
+
+          {% else %}
+
+            {{ s.crop }}
+
+          {% endif %}
+
+        </td>
+
+
+        <!-- ================= QUANTITY ================= -->
+
+        <td>
+
+          {{ s.quantity }}
+
+          {% if language == 'Hindi' %}
+            क्विंटल
+          {% else %}
+            qtl
+          {% endif %}
+
+        </td>
+
+
+        <!-- ================= QUALITY ================= -->
+
+        <td>
+
+          {% if language == 'Hindi' %}
+
+            {{ quality_names.get(s.quality, s.quality) }}
+
+          {% else %}
+
+            {{ s.quality }}
+
+          {% endif %}
+
+        </td>
+
+
+        <!-- ================= RECOMMENDED MARKET ================= -->
+
+        <td>
+
+          {% if s.recommended_market %}
+
+            {% if language == 'Hindi' %}
+
+              {{ market_names.get(
+                  s.recommended_market,
+                  s.recommended_market
+              ) }}
+
+            {% else %}
+
+              {{ s.recommended_market }}
+
+            {% endif %}
+
+          {% else %}
+
+            —
+
+          {% endif %}
+
+        </td>
+
+
+        <!-- ================= EXPECTED NET PROFIT ================= -->
+
+        <td>
+
+          {% if s.expected_net_profit is not none %}
+
+            ₹{{ "%.2f"|format(s.expected_net_profit) }}
+
+          {% else %}
+
+            —
+
+          {% endif %}
+
+        </td>
+
+
+        <!-- ================= DECISION ================= -->
+
+        <td>
+
+          {% if s.decision == 'SELL NOW' %}
+
+            <span class="badge badge-success">
+
+              {% if language == 'Hindi' %}
+                अभी बेचें
+              {% else %}
+                SELL NOW
+              {% endif %}
+
+            </span>
+
+
+          {% elif s.decision == 'WAIT' %}
+
+            <span class="badge badge-warning">
+
+              {% if language == 'Hindi' %}
+                प्रतीक्षा करें
+              {% else %}
+                WAIT
+              {% endif %}
+
+            </span>
+
+
+          {% else %}
+
+            <span class="badge badge-accent">
+
+              {% if language == 'Hindi' %}
+                अभी तक नहीं देखा
+              {% else %}
+                Not viewed yet
+              {% endif %}
+
+            </span>
+
+          {% endif %}
+
+        </td>
+
+      </tr>
+
+      {% endfor %}
+
+    </tbody>
+
+  </table>
+
+</div>
+
+
+{% else %}
+
+<!-- ================= NO SEARCH HISTORY ================= -->
+
+<div class="card text-center">
+
+  <p
+    style="
+      color:var(--text-muted);
+      margin-bottom:16px;
+    "
+  >
+
+    {% if language == 'Hindi' %}
+
+      आपने अभी तक किसी फसल की खोज नहीं की है।
+
+    {% else %}
+
+      You haven't searched for a crop yet.
+
+    {% endif %}
+
+  </p>
+
+
+  <a
+    href="{{ url_for('dashboard') }}"
+    class="btn btn-primary"
+  >
+
+    {% if language == 'Hindi' %}
+
+      अपनी पहली खोज शुरू करें
+
+    {% else %}
+
+      Start Your First Search
+
+    {% endif %}
+
+  </a>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
+```

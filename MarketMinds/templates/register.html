@@ -1,0 +1,352 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if language == 'Hindi' %}
+    रजिस्टर - MarketMinds
+  {% else %}
+    Register - MarketMinds
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header text-center">
+
+  <h1>
+    {% if language == 'Hindi' %}
+      किसान खाता बनाएं
+    {% else %}
+      Create Your Farmer Account
+    {% endif %}
+  </h1>
+
+  <p>
+    {% if language == 'Hindi' %}
+      अपनी खोज सेव करने, सिफारिशों को ट्रैक करने और खरीदारों से जुड़ने के लिए रजिस्टर करें।
+    {% else %}
+      Register to save your searches, track recommendations, and connect with buyers.
+    {% endif %}
+  </p>
+
+</div>
+
+
+<div class="card" style="max-width:600px; margin:0 auto;">
+
+  <form method="POST" action="{{ url_for('register') }}">
+
+    <!-- Full Name + Mobile -->
+    <div class="form-row">
+
+      <div class="form-group">
+
+        <label for="full_name">
+          {% if language == 'Hindi' %}
+            पूरा नाम
+          {% else %}
+            Full Name
+          {% endif %}
+        </label>
+
+        <input
+          type="text"
+          class="form-control"
+          id="full_name"
+          name="full_name"
+          required
+          value="{{ form_data.get('full_name', '') }}"
+          placeholder="{% if language == 'Hindi' %}जैसे राम कुमार{% else %}e.g. Ram Kumar{% endif %}"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="mobile">
+          {% if language == 'Hindi' %}
+            मोबाइल नंबर
+          {% else %}
+            Mobile Number
+          {% endif %}
+        </label>
+
+        <input
+          type="tel"
+          class="form-control"
+          id="mobile"
+          name="mobile"
+          required
+          pattern="[6-9][0-9]{9}"
+          value="{{ form_data.get('mobile', '') }}"
+          placeholder="{% if language == 'Hindi' %}10 अंकों का मोबाइल नंबर{% else %}10-digit mobile number{% endif %}"
+        >
+
+      </div>
+
+    </div>
+
+
+    <!-- Email -->
+    <div class="form-group">
+
+      <label for="email">
+        {% if language == 'Hindi' %}
+          ईमेल
+        {% else %}
+          Email
+        {% endif %}
+      </label>
+
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        required
+        value="{{ form_data.get('email', '') }}"
+        placeholder="you@example.com"
+      >
+
+    </div>
+
+
+    <!-- Password + Confirm Password -->
+    <div class="form-row">
+
+      <div class="form-group">
+
+        <label for="password">
+          {% if language == 'Hindi' %}
+            पासवर्ड
+          {% else %}
+            Password
+          {% endif %}
+        </label>
+
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          required
+          minlength="6"
+          placeholder="{% if language == 'Hindi' %}कम से कम 6 अक्षर{% else %}At least 6 characters{% endif %}"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="confirm_password">
+          {% if language == 'Hindi' %}
+            पासवर्ड की पुष्टि करें
+          {% else %}
+            Confirm Password
+          {% endif %}
+        </label>
+
+        <input
+          type="password"
+          class="form-control"
+          id="confirm_password"
+          name="confirm_password"
+          required
+          minlength="6"
+          placeholder="{% if language == 'Hindi' %}पासवर्ड दोबारा दर्ज करें{% else %}Re-enter password{% endif %}"
+        >
+
+      </div>
+
+    </div>
+
+
+    <!-- State + District -->
+    <div class="form-row">
+
+      <div class="form-group">
+
+        <label for="state">
+          {% if language == 'Hindi' %}
+            राज्य
+          {% else %}
+            State
+          {% endif %}
+        </label>
+
+        <select
+          class="form-control"
+          id="state"
+          name="state"
+          required
+        >
+
+          <option
+            value=""
+            disabled
+            {% if not form_data.get('state') %}selected{% endif %}
+          >
+            {% if language == 'Hindi' %}
+              राज्य चुनें
+            {% else %}
+              Select state
+            {% endif %}
+          </option>
+
+          {% for s in states %}
+
+            <option
+              value="{{ s }}"
+              {% if form_data.get('state') == s %}selected{% endif %}
+            >
+              {{ s }}
+            </option>
+
+          {% endfor %}
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="district">
+          {% if language == 'Hindi' %}
+            जिला
+          {% else %}
+            District
+          {% endif %}
+        </label>
+
+        <input
+          type="text"
+          class="form-control"
+          id="district"
+          name="district"
+          required
+          value="{{ form_data.get('district', '') }}"
+          placeholder="{% if language == 'Hindi' %}जैसे आगरा{% else %}e.g. Agra{% endif %}"
+        >
+
+      </div>
+
+    </div>
+
+
+    <!-- Village + Language -->
+    <div class="form-row">
+
+      <div class="form-group">
+
+        <label for="village">
+          {% if language == 'Hindi' %}
+            गांव / शहर
+          {% else %}
+            Village / Town
+          {% endif %}
+        </label>
+
+        <input
+          type="text"
+          class="form-control"
+          id="village"
+          name="village"
+          required
+          value="{{ form_data.get('village', '') }}"
+          placeholder="{% if language == 'Hindi' %}जैसे बिचपुरी{% else %}e.g. Bichpuri{% endif %}"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="language">
+          {% if language == 'Hindi' %}
+            पसंदीदा भाषा
+          {% else %}
+            Preferred Language
+          {% endif %}
+        </label>
+
+        <select
+          class="form-control"
+          id="language"
+          name="language"
+        >
+
+          <option
+            value="English"
+            {% if form_data.get('language', 'English') == 'English' %}selected{% endif %}
+          >
+            English
+          </option>
+
+          <option
+            value="Hindi"
+            {% if form_data.get('language') == 'Hindi' %}selected{% endif %}
+          >
+            हिंदी
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <!-- Create Account Button -->
+    <button
+      type="submit"
+      class="btn btn-primary btn-block"
+    >
+
+      {% if language == 'Hindi' %}
+        खाता बनाएं
+      {% else %}
+        Create Account
+      {% endif %}
+
+    </button>
+
+  </form>
+
+
+  <!-- Login Link -->
+  <p
+    class="text-center"
+    style="margin-top:16px; color:var(--text-muted); font-size:0.9rem;"
+  >
+
+    {% if language == 'Hindi' %}
+
+      क्या आपके पास पहले से खाता है?
+
+      <a
+        href="{{ url_for('login') }}"
+        style="color:var(--primary-dark); font-weight:600;"
+      >
+        यहां लॉग इन करें
+      </a>
+
+    {% else %}
+
+      Already have an account?
+
+      <a
+        href="{{ url_for('login') }}"
+        style="color:var(--primary-dark); font-weight:600;"
+      >
+        Log in here
+      </a>
+
+    {% endif %}
+
+  </p>
+
+</div>
+
+{% endblock %}

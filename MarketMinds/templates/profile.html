@@ -1,0 +1,443 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if language == 'Hindi' %}मेरी प्रोफ़ाइल - MarketMinds{% else %}My Profile - MarketMinds{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+  <h1>
+    {% if language == 'Hindi' %}
+      मेरी प्रोफ़ाइल
+    {% else %}
+      My Profile
+    {% endif %}
+  </h1>
+
+  <p>
+    {% if language == 'Hindi' %}
+      आपके खाते की जानकारी। इसका उपयोग आपकी खोजों और स्थान की जानकारी को पहले से भरने के लिए किया जाता है।
+    {% else %}
+      Your account details. This information is used to prefill your searches and location.
+    {% endif %}
+  </p>
+
+</div>
+
+
+<div class="card-grid" style="grid-template-columns: 1fr 1.3fr;">
+
+
+  <!-- ================= ACCOUNT OVERVIEW ================= -->
+
+  <div class="card">
+
+    <h3 style="margin-top:0; color:var(--primary-dark);">
+
+      {% if language == 'Hindi' %}
+        खाते का विवरण
+      {% else %}
+        Account Overview
+      {% endif %}
+
+    </h3>
+
+
+    <div class="stat-box" style="margin-bottom:10px;">
+
+      <div class="label">
+        {% if language == 'Hindi' %}
+          पूरा नाम
+        {% else %}
+          Full Name
+        {% endif %}
+      </div>
+
+      <div class="value">
+        {{ farmer.full_name }}
+      </div>
+
+    </div>
+
+
+    <div class="stat-box" style="margin-bottom:10px;">
+
+      <div class="label">
+        {% if language == 'Hindi' %}
+          मोबाइल नंबर
+        {% else %}
+          Mobile
+        {% endif %}
+      </div>
+
+      <div class="value">
+        {{ farmer.mobile }}
+      </div>
+
+    </div>
+
+
+    <div class="stat-box" style="margin-bottom:10px;">
+
+      <div class="label">
+        {% if language == 'Hindi' %}
+          ईमेल
+        {% else %}
+          Email
+        {% endif %}
+      </div>
+
+      <div class="value">
+        {{ farmer.email }}
+      </div>
+
+    </div>
+
+
+    <div class="stat-box" style="margin-bottom:10px;">
+
+      <div class="label">
+        {% if language == 'Hindi' %}
+          स्थान
+        {% else %}
+          Location
+        {% endif %}
+      </div>
+
+      <div class="value" style="font-size:1rem;">
+        {{ farmer.location_display }}
+      </div>
+
+    </div>
+
+
+    <div class="stat-box">
+
+      <div class="label">
+        {% if language == 'Hindi' %}
+          पसंदीदा भाषा
+        {% else %}
+          Preferred Language
+        {% endif %}
+      </div>
+
+      <div class="value">
+
+        {% if farmer.language == 'Hindi' %}
+          {% if language == 'Hindi' %}
+            हिंदी
+          {% else %}
+            Hindi
+          {% endif %}
+        {% else %}
+          {% if language == 'Hindi' %}
+            अंग्रेज़ी
+          {% else %}
+            English
+          {% endif %}
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= UPDATE PROFILE ================= -->
+
+  <div class="card">
+
+    <h3 style="margin-top:0; color:var(--primary-dark);">
+
+      {% if language == 'Hindi' %}
+        प्रोफ़ाइल अपडेट करें
+      {% else %}
+        Update Profile
+      {% endif %}
+
+    </h3>
+
+
+    <form method="POST" action="{{ url_for('profile') }}">
+
+
+      <!-- FULL NAME -->
+
+      <div class="form-group">
+
+        <label for="full_name">
+
+          {% if language == 'Hindi' %}
+            पूरा नाम
+          {% else %}
+            Full Name
+          {% endif %}
+
+        </label>
+
+        <input
+          type="text"
+          class="form-control"
+          id="full_name"
+          name="full_name"
+          required
+          value="{{ farmer.full_name }}"
+        >
+
+      </div>
+
+
+      <!-- STATE + DISTRICT -->
+
+      <div class="form-row">
+
+        <div class="form-group">
+
+          <label for="state">
+
+            {% if language == 'Hindi' %}
+              राज्य
+            {% else %}
+              State
+            {% endif %}
+
+          </label>
+
+
+          <select
+            class="form-control"
+            id="state"
+            name="state"
+            required
+          >
+
+            {% for s in states %}
+
+              <option
+                value="{{ s }}"
+                {% if farmer.state == s %}selected{% endif %}
+              >
+
+                {% if language == 'Hindi' %}
+
+                  {{
+                    {
+                      'Uttar Pradesh':'उत्तर प्रदेश',
+                      'Delhi':'दिल्ली',
+                      'Haryana':'हरियाणा',
+                      'Punjab':'पंजाब',
+                      'Rajasthan':'राजस्थान',
+                      'Madhya Pradesh':'मध्य प्रदेश',
+                      'Bihar':'बिहार',
+                      'Maharashtra':'महाराष्ट्र',
+                      'Gujarat':'गुजरात',
+                      'West Bengal':'पश्चिम बंगाल',
+                      'Jharkhand':'झारखंड',
+                      'Chhattisgarh':'छत्तीसगढ़',
+                      'Uttarakhand':'उत्तराखंड',
+                      'Himachal Pradesh':'हिमाचल प्रदेश',
+                      'Odisha':'ओडिशा',
+                      'Tamil Nadu':'तमिलनाडु',
+                      'Karnataka':'कर्नाटक',
+                      'Andhra Pradesh':'आंध्र प्रदेश',
+                      'Telangana':'तेलंगाना',
+                      'Kerala':'केरल',
+                      'Assam':'असम'
+                    }.get(s, s)
+                  }}
+
+                {% else %}
+
+                  {{ s }}
+
+                {% endif %}
+
+              </option>
+
+            {% endfor %}
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="district">
+
+            {% if language == 'Hindi' %}
+              जिला
+            {% else %}
+              District
+            {% endif %}
+
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="district"
+            name="district"
+            required
+            value="{{ farmer.district }}"
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- VILLAGE + LANGUAGE -->
+
+      <div class="form-row">
+
+        <div class="form-group">
+
+          <label for="village">
+
+            {% if language == 'Hindi' %}
+              गाँव / शहर
+            {% else %}
+              Village / Town
+            {% endif %}
+
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="village"
+            name="village"
+            required
+            value="{{ farmer.village }}"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="language">
+
+            {% if language == 'Hindi' %}
+              पसंदीदा भाषा
+            {% else %}
+              Preferred Language
+            {% endif %}
+
+          </label>
+
+
+          <!-- FIXED LANGUAGE DROPDOWN -->
+
+          <select
+            class="form-control"
+            id="language"
+            name="language"
+          >
+
+            <option
+              value="English"
+              {% if farmer.language == 'English' %}selected{% endif %}
+            >
+              {% if language == 'Hindi' %}
+                अंग्रेज़ी
+              {% else %}
+                English
+              {% endif %}
+            </option>
+
+
+            <option
+              value="Hindi"
+              {% if farmer.language == 'Hindi' %}selected{% endif %}
+            >
+              {% if language == 'Hindi' %}
+                हिंदी
+              {% else %}
+                Hindi
+              {% endif %}
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- SECURITY NOTE -->
+
+      <div class="data-note">
+
+        {% if language == 'Hindi' %}
+
+          सुरक्षा कारणों से ईमेल और मोबाइल नंबर यहां बदले नहीं जा सकते।
+          इन्हें अपडेट करने के लिए सहायता टीम से संपर्क करें।
+
+        {% else %}
+
+          Email and mobile number cannot be changed here for security.
+          Contact support to update them.
+
+        {% endif %}
+
+      </div>
+
+
+      <!-- SAVE -->
+
+      <button type="submit" class="btn btn-primary">
+
+        {% if language == 'Hindi' %}
+          बदलाव सहेजें
+        {% else %}
+          Save Changes
+        {% endif %}
+
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- ================= BOTTOM BUTTONS ================= -->
+
+<div class="text-center" style="margin-top:30px;">
+
+  <a
+    href="{{ url_for('history') }}"
+    class="btn btn-outline"
+  >
+
+    {% if language == 'Hindi' %}
+      मेरा खोज इतिहास देखें
+    {% else %}
+      View My Search History
+    {% endif %}
+
+  </a>
+
+
+  <a
+    href="{{ url_for('dashboard') }}"
+    class="btn btn-primary"
+  >
+
+    {% if language == 'Hindi' %}
+      डैशबोर्ड पर जाएं
+    {% else %}
+      Go to Dashboard
+    {% endif %}
+
+  </a>
+
+</div>
+
+{% endblock %}

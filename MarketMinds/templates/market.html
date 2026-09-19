@@ -1,0 +1,720 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if language == 'Hindi' %}
+    बाज़ार इंटेलिजेंस - MarketMinds
+  {% else %}
+    Market Intelligence - MarketMinds
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+  <h1>
+    {% if language == 'Hindi' %}
+      बाज़ार इंटेलिजेंस
+    {% else %}
+      Market Intelligence
+    {% endif %}
+  </h1>
+
+
+  <p>
+
+    {% if language == 'Hindi' %}
+
+      <strong>{{ farmer_input.quantity }} क्विंटल</strong>
+
+      <strong>
+        {% if farmer_input.crop == 'Tomato' %}
+          टमाटर
+        {% elif farmer_input.crop == 'Onion' %}
+          प्याज़
+        {% elif farmer_input.crop == 'Potato' %}
+          आलू
+        {% elif farmer_input.crop == 'Wheat' %}
+          गेहूं
+        {% elif farmer_input.crop == 'Rice' %}
+          चावल
+        {% elif farmer_input.crop == 'Maize' %}
+          मक्का
+        {% elif farmer_input.crop == 'Cotton' %}
+          कपास
+        {% elif farmer_input.crop == 'Sugarcane' %}
+          गन्ना
+        {% elif farmer_input.crop == 'Mustard' %}
+          सरसों
+        {% elif farmer_input.crop == 'Soybean' %}
+          सोयाबीन
+        {% elif farmer_input.crop == 'Peas' %}
+          मटर
+        {% elif farmer_input.crop == 'Carrot' %}
+          गाजर
+        {% elif farmer_input.crop == 'Cabbage' %}
+          पत्तागोभी
+        {% elif farmer_input.crop == 'Cauliflower' %}
+          फूलगोभी
+        {% else %}
+          {{ farmer_input.crop }}
+        {% endif %}
+      </strong>
+
+      (
+      {% if farmer_input.quality == 'Grade A' %}
+        ग्रेड A
+      {% elif farmer_input.quality == 'Grade B' %}
+        ग्रेड B
+      {% elif farmer_input.quality == 'Grade C' %}
+        ग्रेड C
+      {% else %}
+        {{ farmer_input.quality }}
+      {% endif %}
+      )
+
+      के लिए
+
+      <strong>
+        {{ farmer_input.location }}
+      </strong>
+
+      से बाज़ार विश्लेषण।
+
+    {% else %}
+
+      Analysis for
+      <strong>{{ farmer_input.quantity }} quintals</strong>
+      of
+      <strong>{{ farmer_input.crop }}</strong>
+      ({{ farmer_input.quality }})
+      from
+      <strong>{{ farmer_input.location }}</strong>.
+
+    {% endif %}
+
+  </p>
+
+</div>
+
+
+
+{% if markets %}
+
+
+<!-- ========================================================= -->
+<!-- MARKET TABLE -->
+<!-- ========================================================= -->
+
+<div class="table-wrap">
+
+  <table>
+
+    <thead>
+
+      <tr>
+
+        <th>
+          {% if language == 'Hindi' %}
+            बाज़ार
+          {% else %}
+            Market
+          {% endif %}
+        </th>
+
+
+        <th>
+          {% if language == 'Hindi' %}
+            वर्तमान कीमत (₹/क्विंटल)
+          {% else %}
+            Current Price (₹/qtl)
+          {% endif %}
+        </th>
+
+
+        <th>
+          {% if language == 'Hindi' %}
+            अनुमानित कीमत (₹/क्विंटल)
+          {% else %}
+            Predicted Price (₹/qtl)
+          {% endif %}
+        </th>
+
+
+        <th>
+          {% if language == 'Hindi' %}
+            दूरी (किमी)
+          {% else %}
+            Distance (km)
+          {% endif %}
+        </th>
+
+
+        <th>
+          {% if language == 'Hindi' %}
+            अनुमानित परिवहन लागत
+          {% else %}
+            Est. Transport Cost
+          {% endif %}
+        </th>
+
+
+        <th>
+          {% if language == 'Hindi' %}
+            अपेक्षित आय
+          {% else %}
+            Expected Revenue
+          {% endif %}
+        </th>
+
+
+        <th>
+          {% if language == 'Hindi' %}
+            अपेक्षित शुद्ध लाभ
+          {% else %}
+            Expected Net Profit
+          {% endif %}
+        </th>
+
+      </tr>
+
+    </thead>
+
+
+    <tbody>
+
+      {% for m in markets %}
+
+      <tr class="{{ 'highlight-row' if loop.first }}">
+
+
+        <!-- ================================================= -->
+        <!-- MARKET NAME -->
+        <!-- ================================================= -->
+
+        <td>
+
+          {% if language == 'Hindi' %}
+
+            {% if m.market == 'Agra Mandi' %}
+              आगरा मंडी
+
+            {% elif m.market == 'Delhi Azadpur Mandi' %}
+              दिल्ली आज़ादपुर मंडी
+
+            {% elif m.market == 'Azadpur Mandi' %}
+              आज़ादपुर मंडी
+
+            {% elif m.market == 'Lucknow Mandi' %}
+              लखनऊ मंडी
+
+            {% elif m.market == 'Jaipur Mandi' %}
+              जयपुर मंडी
+
+            {% elif m.market == 'Kanpur Mandi' %}
+              कानपुर मंडी
+
+            {% elif m.market == 'Ghazipur Mandi' %}
+              गाज़ीपुर मंडी
+
+            {% elif m.market == 'Khurja Mandi' %}
+              खुर्जा मंडी
+
+            {% elif m.market == 'Noida Mandi' %}
+              नोएडा मंडी
+
+            {% elif m.market == 'Greater Noida Mandi' %}
+              ग्रेटर नोएडा मंडी
+
+            {% elif m.market == 'Mathura Mandi' %}
+              मथुरा मंडी
+
+            {% elif m.market == 'Bhopal Mandi' %}
+              भोपाल मंडी
+
+            {% elif m.market == 'Meerut Mandi' %}
+              मेरठ मंडी
+
+            {% elif m.market == 'Gautam Buddh Nagar Mandi' %}
+              गौतम बुद्ध नगर मंडी
+
+            {% else %}
+              {{ m.market }}
+            {% endif %}
+
+
+          {% else %}
+
+            {{ m.market }}
+
+          {% endif %}
+
+
+          {% if loop.first %}
+
+            <span class="badge badge-success">
+
+              {% if language == 'Hindi' %}
+                सर्वश्रेष्ठ
+              {% else %}
+                Best
+              {% endif %}
+
+            </span>
+
+          {% endif %}
+
+        </td>
+
+
+
+        <!-- ================================================= -->
+        <!-- CURRENT PRICE -->
+        <!-- ================================================= -->
+
+        <td>
+          ₹{{ "%.2f"|format(m.current_price) }}
+        </td>
+
+
+
+        <!-- ================================================= -->
+        <!-- PREDICTED PRICE -->
+        <!-- ================================================= -->
+
+        <td>
+          ₹{{ "%.2f"|format(m.predicted_price) }}
+        </td>
+
+
+
+        <!-- ================================================= -->
+        <!-- DISTANCE -->
+        <!-- ================================================= -->
+
+        <td>
+
+          {{ "%.0f"|format(m.distance_km) }}
+
+          {% if language == 'Hindi' %}
+            किमी
+          {% else %}
+            km
+          {% endif %}
+
+        </td>
+
+
+
+        <!-- ================================================= -->
+        <!-- TRANSPORT COST -->
+        <!-- ================================================= -->
+
+        <td>
+          ₹{{ "%.2f"|format(m.transport_cost) }}
+        </td>
+
+
+
+        <!-- ================================================= -->
+        <!-- EXPECTED REVENUE -->
+        <!-- ================================================= -->
+
+        <td>
+          ₹{{ "%.2f"|format(m.expected_revenue) }}
+        </td>
+
+
+
+        <!-- ================================================= -->
+        <!-- NET PROFIT -->
+        <!-- ================================================= -->
+
+        <td>
+
+          <strong>
+            ₹{{ "%.2f"|format(m.expected_net_profit) }}
+          </strong>
+
+        </td>
+
+      </tr>
+
+      {% endfor %}
+
+    </tbody>
+
+  </table>
+
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- CHARTS -->
+<!-- ========================================================= -->
+
+<div class="card-grid" style="margin-top:30px;">
+
+
+  <!-- ===================================================== -->
+  <!-- PRICE TREND -->
+  <!-- ===================================================== -->
+
+  <div class="card chart-card">
+
+    <h3>
+
+      {% if language == 'Hindi' %}
+        मूल्य रुझान —
+      {% else %}
+        Price Trend —
+      {% endif %}
+
+
+      {% if markets[0].market == 'Agra Mandi' %}
+
+        {% if language == 'Hindi' %}
+          आगरा मंडी
+        {% else %}
+          Agra Mandi
+        {% endif %}
+
+
+      {% elif markets[0].market == 'Delhi Azadpur Mandi' %}
+
+        {% if language == 'Hindi' %}
+          दिल्ली आज़ादपुर मंडी
+        {% else %}
+          Delhi Azadpur Mandi
+        {% endif %}
+
+
+      {% elif markets[0].market == 'Azadpur Mandi' %}
+
+        {% if language == 'Hindi' %}
+          आज़ादपुर मंडी
+        {% else %}
+          Azadpur Mandi
+        {% endif %}
+
+
+      {% elif markets[0].market == 'Lucknow Mandi' %}
+
+        {% if language == 'Hindi' %}
+          लखनऊ मंडी
+        {% else %}
+          Lucknow Mandi
+        {% endif %}
+
+
+      {% elif markets[0].market == 'Jaipur Mandi' %}
+
+        {% if language == 'Hindi' %}
+          जयपुर मंडी
+        {% else %}
+          Jaipur Mandi
+        {% endif %}
+
+
+      {% elif markets[0].market == 'Kanpur Mandi' %}
+
+        {% if language == 'Hindi' %}
+          कानपुर मंडी
+        {% else %}
+          Kanpur Mandi
+        {% endif %}
+
+
+      {% elif markets[0].market == 'Ghazipur Mandi' %}
+
+        {% if language == 'Hindi' %}
+          गाज़ीपुर मंडी
+        {% else %}
+          Ghazipur Mandi
+        {% endif %}
+
+
+      {% elif markets[0].market == 'Khurja Mandi' %}
+
+        {% if language == 'Hindi' %}
+          खुर्जा मंडी
+        {% else %}
+          Khurja Mandi
+        {% endif %}
+
+
+      {% elif markets[0].market == 'Noida Mandi' %}
+
+        {% if language == 'Hindi' %}
+          नोएडा मंडी
+        {% else %}
+          Noida Mandi
+        {% endif %}
+
+
+      {% elif markets[0].market == 'Greater Noida Mandi' %}
+
+        {% if language == 'Hindi' %}
+          ग्रेटर नोएडा मंडी
+        {% else %}
+          Greater Noida Mandi
+        {% endif %}
+
+
+      {% elif markets[0].market == 'Mathura Mandi' %}
+
+        {% if language == 'Hindi' %}
+          मथुरा मंडी
+        {% else %}
+          Mathura Mandi
+        {% endif %}
+
+
+      {% elif markets[0].market == 'Bhopal Mandi' %}
+
+        {% if language == 'Hindi' %}
+          भोपाल मंडी
+        {% else %}
+          Bhopal Mandi
+        {% endif %}
+
+
+      {% elif markets[0].market == 'Meerut Mandi' %}
+
+        {% if language == 'Hindi' %}
+          मेरठ मंडी
+        {% else %}
+          Meerut Mandi
+        {% endif %}
+
+
+      {% else %}
+
+        {{ markets[0].market }}
+
+      {% endif %}
+
+    </h3>
+
+
+    <div class="chart-container">
+
+      <canvas id="priceTrendChart"></canvas>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ===================================================== -->
+  <!-- MARKET COMPARISON -->
+  <!-- ===================================================== -->
+
+  <div class="card chart-card">
+
+    <h3>
+
+      {% if language == 'Hindi' %}
+
+        बाज़ार तुलना
+        (कीमत और शुद्ध लाभ)
+
+      {% else %}
+
+        Market Comparison
+        (Price &amp; Net Profit)
+
+      {% endif %}
+
+    </h3>
+
+
+    <div class="chart-container">
+
+      <canvas id="marketComparisonChart"></canvas>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- AI RECOMMENDATION -->
+<!-- ========================================================= -->
+
+<div
+  class="text-center"
+  style="margin-top:30px;"
+>
+
+  <a
+    href="{{ url_for('recommendation') }}"
+    class="btn btn-primary"
+  >
+
+    {% if language == 'Hindi' %}
+
+      AI सिफारिश देखें
+
+    {% else %}
+
+      View AI Recommendation
+
+    {% endif %}
+
+  </a>
+
+</div>
+
+
+
+{% else %}
+
+
+
+<!-- ========================================================= -->
+<!-- NO DATA -->
+<!-- ========================================================= -->
+
+<div class="alert alert-warning">
+
+  {% if language == 'Hindi' %}
+
+    इस फसल के लिए अभी कोई बाज़ार डेटा उपलब्ध नहीं है।
+
+  {% else %}
+
+    No market data available for this crop yet.
+
+  {% endif %}
+
+</div>
+
+
+{% endif %}
+
+{% endblock %}
+
+
+
+<!-- ========================================================= -->
+<!-- SCRIPTS -->
+<!-- ========================================================= -->
+
+{% block scripts %}
+
+<script>
+
+  const priceHistory = {{ price_history | tojson }};
+
+
+  /* ============================================================
+     MARKET NAME TRANSLATION FOR CHARTS
+     ============================================================ */
+
+  function translateMarketName(name) {
+
+    {% if language == 'Hindi' %}
+
+      const marketTranslations = {
+
+        "Agra Mandi": "आगरा मंडी",
+
+        "Delhi Azadpur Mandi": "दिल्ली आज़ादपुर मंडी",
+
+        "Azadpur Mandi": "आज़ादपुर मंडी",
+
+        "Lucknow Mandi": "लखनऊ मंडी",
+
+        "Jaipur Mandi": "जयपुर मंडी",
+
+        "Kanpur Mandi": "कानपुर मंडी",
+
+        "Ghazipur Mandi": "गाज़ीपुर मंडी",
+
+        "Khurja Mandi": "खुर्जा मंडी",
+
+        "Noida Mandi": "नोएडा मंडी",
+
+        "Greater Noida Mandi": "ग्रेटर नोएडा मंडी",
+
+        "Mathura Mandi": "मथुरा मंडी",
+
+        "Bhopal Mandi": "भोपाल मंडी",
+
+        "Meerut Mandi": "मेरठ मंडी",
+
+        "Gautam Buddh Nagar Mandi": "गौतम बुद्ध नगर मंडी"
+
+      };
+
+      return marketTranslations[name] || name;
+
+    {% else %}
+
+      return name;
+
+    {% endif %}
+
+  }
+
+
+
+  /* ============================================================
+     PRICE TREND CHART
+     ============================================================ */
+
+  renderPriceTrendChart(
+
+    "priceTrendChart",
+
+    priceHistory.map(p => p.date),
+
+    priceHistory.map(p => p.price),
+
+    {% if language == 'Hindi' %}
+      "अनुमानित"
+    {% else %}
+      "Predicted"
+    {% endif %},
+
+    {{ markets[0].predicted_price if markets else 0 }}
+
+  );
+
+
+
+  /* ============================================================
+     MARKET COMPARISON CHART
+     ============================================================ */
+
+  const originalChartLabels = {{ chart_labels | tojson }};
+
+
+  const translatedChartLabels =
+    originalChartLabels.map(label => translateMarketName(label));
+
+
+  renderMarketComparisonChart(
+
+    "marketComparisonChart",
+
+    translatedChartLabels,
+
+    {{ chart_profits | tojson }},
+
+    {{ chart_prices | tojson }},
+
+    {{ chart_predicted | tojson }}
+
+  );
+
+</script>
+
+{% endblock %}

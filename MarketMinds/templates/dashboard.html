@@ -1,0 +1,807 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if language == 'Hindi' %}
+    डैशबोर्ड - MarketMinds
+  {% else %}
+    Dashboard - MarketMinds
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+  <h1>
+    {% if language == 'Hindi' %}
+      स्वागत है, {{ farmer.full_name.split(' ')[0] }} 👋
+    {% else %}
+      Welcome, {{ farmer.full_name.split(' ')[0] }} 👋
+    {% endif %}
+  </h1>
+
+  <p>
+    {% if language == 'Hindi' %}
+      अपनी फसल की जानकारी दें और हम आपके लिए सबसे अच्छा बाज़ार, खरीदार और बिक्री रणनीति खोजेंगे।
+    {% else %}
+      Tell us about your crop, and we'll find your best market, buyer, and selling strategy.
+    {% endif %}
+  </p>
+
+</div>
+
+
+{% if latest_search %}
+
+<!-- ==================== LATEST SEARCH ==================== -->
+
+<div class="card-grid">
+
+  <!-- CURRENT CROP -->
+  <div class="card">
+
+    <div class="label"
+         style="color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">
+
+      {% if language == 'Hindi' %}
+        वर्तमान फसल
+      {% else %}
+        Current Crop
+      {% endif %}
+
+    </div>
+
+    <div class="best-market-name" style="font-size:1.3rem;">
+
+      {% if language == 'Hindi' %}
+
+        {% if latest_search.crop == 'Tomato' %}
+          टमाटर
+        {% elif latest_search.crop == 'Onion' %}
+          प्याज़
+        {% elif latest_search.crop == 'Potato' %}
+          आलू
+        {% elif latest_search.crop == 'Wheat' %}
+          गेहूं
+        {% elif latest_search.crop == 'Rice' %}
+          चावल
+        {% elif latest_search.crop == 'Maize' %}
+          मक्का
+        {% elif latest_search.crop == 'Cotton' %}
+          कपास
+        {% elif latest_search.crop == 'Sugarcane' %}
+          गन्ना
+        {% elif latest_search.crop == 'Mustard' %}
+          सरसों
+        {% elif latest_search.crop == 'Soybean' %}
+          सोयाबीन
+        {% elif latest_search.crop == 'Potato' %}
+          आलू
+        {% else %}
+          {{ latest_search.crop }}
+        {% endif %}
+
+        (
+
+        {% if latest_search.quality == 'Grade A' %}
+          ग्रेड A
+        {% elif latest_search.quality == 'Grade B' %}
+          ग्रेड B
+        {% elif latest_search.quality == 'Grade C' %}
+          ग्रेड C
+        {% elif latest_search.quality == 'Premium' %}
+          प्रीमियम
+        {% elif latest_search.quality == 'Standard' %}
+          मानक
+        {% else %}
+          {{ latest_search.quality }}
+        {% endif %}
+
+        )
+
+      {% else %}
+
+        {{ latest_search.crop }} ({{ latest_search.quality }})
+
+      {% endif %}
+
+    </div>
+
+  </div>
+
+
+  <!-- QUANTITY -->
+  <div class="card">
+
+    <div class="label"
+         style="color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">
+
+      {% if language == 'Hindi' %}
+        मात्रा
+      {% else %}
+        Quantity
+      {% endif %}
+
+    </div>
+
+    <div class="best-market-name" style="font-size:1.3rem;">
+
+      {{ latest_search.quantity }}
+
+      {% if language == 'Hindi' %}
+        क्विंटल
+      {% else %}
+        Quintals
+      {% endif %}
+
+    </div>
+
+  </div>
+
+
+  <!-- RECOMMENDED MARKET -->
+  <div class="card">
+
+    <div class="label"
+         style="color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">
+
+      {% if language == 'Hindi' %}
+        अनुशंसित बाज़ार
+      {% else %}
+        Recommended Market
+      {% endif %}
+
+    </div>
+
+    <div class="best-market-name" style="font-size:1.3rem;">
+
+      {% if latest_search.recommended_market %}
+
+        {% if language == 'Hindi' %}
+
+          {% if latest_search.recommended_market == 'Agra Mandi' %}
+            आगरा मंडी
+          {% elif latest_search.recommended_market == 'Delhi Azadpur Mandi' %}
+            दिल्ली आज़ादपुर मंडी
+          {% elif latest_search.recommended_market == 'Azadpur Mandi' %}
+            आज़ादपुर मंडी
+          {% elif latest_search.recommended_market == 'Lucknow Mandi' %}
+            लखनऊ मंडी
+          {% elif latest_search.recommended_market == 'Jaipur Mandi' %}
+            जयपुर मंडी
+          {% elif latest_search.recommended_market == 'Kanpur Mandi' %}
+            कानपुर मंडी
+          {% elif latest_search.recommended_market == 'Ghazipur Mandi' %}
+            गाज़ीपुर मंडी
+          {% elif latest_search.recommended_market == 'Khurja Mandi' %}
+            खुर्जा मंडी
+          {% elif latest_search.recommended_market == 'Noida Mandi' %}
+            नोएडा मंडी
+          {% elif latest_search.recommended_market == 'Meerut Mandi' %}
+            मेरठ मंडी
+          {% else %}
+            {{ latest_search.recommended_market }}
+          {% endif %}
+
+        {% else %}
+
+          {{ latest_search.recommended_market }}
+
+        {% endif %}
+
+      {% else %}
+
+        {% if language == 'Hindi' %}
+          सिफारिश देखें →
+        {% else %}
+          View recommendation →
+        {% endif %}
+
+      {% endif %}
+
+    </div>
+
+  </div>
+
+
+  <!-- ESTIMATED MONEY -->
+  <div class="card">
+
+    <div class="label"
+         style="color:var(--text-muted); font-weight:600; font-size:0.8rem; text-transform:uppercase;">
+
+      {% if language == 'Hindi' %}
+        अनुमानित प्राप्त राशि
+      {% else %}
+        Estimated Money You May Receive
+      {% endif %}
+
+    </div>
+
+    <div class="best-market-name"
+         style="font-size:1.3rem; color:var(--primary-dark);">
+
+      {% if latest_search.expected_net_profit is not none %}
+
+        ₹{{ "%.2f"|format(latest_search.expected_net_profit) }}
+
+      {% else %}
+
+        —
+
+      {% endif %}
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ==================== QUICK ACTIONS ==================== -->
+
+<div class="text-center" style="margin-bottom:20px;">
+
+  <a href="{{ url_for('recommendation') }}" class="btn btn-outline">
+
+    {% if language == 'Hindi' %}
+      सिफारिश देखें
+    {% else %}
+      Check Recommendation
+    {% endif %}
+
+  </a>
+
+
+  <a href="{{ url_for('market') }}" class="btn btn-outline">
+
+    {% if language == 'Hindi' %}
+      बाज़ारों की तुलना करें
+    {% else %}
+      Compare Markets
+    {% endif %}
+
+  </a>
+
+
+  <a href="{{ url_for('buyers') }}" class="btn btn-outline">
+
+    {% if language == 'Hindi' %}
+      खरीदार खोजें
+    {% else %}
+      Find Buyers
+    {% endif %}
+
+  </a>
+
+</div>
+
+{% endif %}
+
+
+
+<!-- ==================== CROP DETAILS FORM ==================== -->
+
+<div class="card" style="max-width:700px; margin:0 auto;">
+
+  <h3 style="margin-top:0; color:var(--primary-dark);">
+
+    {% if language == 'Hindi' %}
+      अपनी फसल की जानकारी दर्ज करें
+    {% else %}
+      Enter Your Crop Details
+    {% endif %}
+
+  </h3>
+
+
+  <form id="farmerForm"
+        method="POST"
+        action="{{ url_for('dashboard') }}">
+
+
+    <!-- CROP + QUANTITY -->
+
+    <div class="form-row">
+
+      <!-- CROP -->
+      <div class="form-group">
+
+        <label for="crop">
+
+          {% if language == 'Hindi' %}
+            फसल
+          {% else %}
+            Crop
+          {% endif %}
+
+        </label>
+
+
+        <select
+          class="form-control"
+          id="crop"
+          name="crop"
+          required
+        >
+
+          <option
+            value=""
+            disabled
+            {% if not form_data.get('crop') %}selected{% endif %}
+          >
+
+            {% if language == 'Hindi' %}
+              फसल चुनें
+            {% else %}
+              Select a crop
+            {% endif %}
+
+          </option>
+
+
+          {% for c in crops %}
+
+            <option
+              value="{{ c }}"
+              {% if form_data.get('crop') == c %}selected{% endif %}
+            >
+
+              {% if language == 'Hindi' %}
+
+                {% if c == 'Tomato' %}
+                  टमाटर
+                {% elif c == 'Onion' %}
+                  प्याज़
+                {% elif c == 'Potato' %}
+                  आलू
+                {% elif c == 'Wheat' %}
+                  गेहूं
+                {% elif c == 'Rice' %}
+                  चावल
+                {% elif c == 'Maize' %}
+                  मक्का
+                {% elif c == 'Cotton' %}
+                  कपास
+                {% elif c == 'Sugarcane' %}
+                  गन्ना
+                {% elif c == 'Mustard' %}
+                  सरसों
+                {% elif c == 'Soybean' %}
+                  सोयाबीन
+                {% elif c == 'Peas' %}
+                  मटर
+                {% elif c == 'Potato' %}
+                  आलू
+                {% elif c == 'Carrot' %}
+                  गाजर
+                {% elif c == 'Cabbage' %}
+                  पत्तागोभी
+                {% elif c == 'Cauliflower' %}
+                  फूलगोभी
+                {% else %}
+                  {{ c }}
+                {% endif %}
+
+              {% else %}
+
+                {{ c }}
+
+              {% endif %}
+
+            </option>
+
+          {% endfor %}
+
+        </select>
+
+      </div>
+
+
+      <!-- QUANTITY -->
+      <div class="form-group">
+
+        <label for="quantity">
+
+          {% if language == 'Hindi' %}
+            मात्रा (क्विंटल)
+          {% else %}
+            Quantity (Quintals)
+          {% endif %}
+
+        </label>
+
+
+        <input
+          type="number"
+          class="form-control"
+          id="quantity"
+          name="quantity"
+          min="0.1"
+          step="0.1"
+          placeholder="{% if language == 'Hindi' %}जैसे 50{% else %}e.g. 50{% endif %}"
+          value="{{ form_data.get('quantity', '') }}"
+          required
+        >
+
+      </div>
+
+    </div>
+
+
+
+    <!-- QUALITY + WAITING DAYS -->
+
+    <div class="form-row">
+
+      <!-- QUALITY -->
+      <div class="form-group">
+
+        <label for="quality">
+
+          {% if language == 'Hindi' %}
+            गुणवत्ता श्रेणी
+          {% else %}
+            Quality Grade
+          {% endif %}
+
+        </label>
+
+
+        <select
+          class="form-control"
+          id="quality"
+          name="quality"
+          required
+        >
+
+          <option
+            value=""
+            disabled
+            {% if not form_data.get('quality') %}selected{% endif %}
+          >
+
+            {% if language == 'Hindi' %}
+              गुणवत्ता श्रेणी चुनें
+            {% else %}
+              Select quality grade
+            {% endif %}
+
+          </option>
+
+
+          {% for q in qualities %}
+
+            <option
+              value="{{ q }}"
+              {% if form_data.get('quality') == q %}selected{% endif %}
+            >
+
+              {% if language == 'Hindi' %}
+
+                {% if q == 'Grade A' %}
+                  ग्रेड A
+                {% elif q == 'Grade B' %}
+                  ग्रेड B
+                {% elif q == 'Grade C' %}
+                  ग्रेड C
+                {% elif q == 'Premium' %}
+                  प्रीमियम
+                {% elif q == 'Standard' %}
+                  मानक
+                {% elif q == 'Average' %}
+                  औसत
+                {% elif q == 'Good' %}
+                  अच्छी
+                {% elif q == 'Poor' %}
+                  निम्न
+                {% else %}
+                  {{ q }}
+                {% endif %}
+
+              {% else %}
+
+                {{ q }}
+
+              {% endif %}
+
+            </option>
+
+          {% endfor %}
+
+        </select>
+
+      </div>
+
+
+      <!-- WAITING DAYS -->
+      <div class="form-group">
+
+        <label for="waiting_days">
+
+          {% if language == 'Hindi' %}
+            अपेक्षित प्रतीक्षा दिन
+            (यदि आप फसल रोकना चाहते हैं)
+          {% else %}
+            Expected Waiting Days
+            (if you consider holding)
+          {% endif %}
+
+        </label>
+
+
+        <input
+          type="number"
+          class="form-control"
+          id="waiting_days"
+          name="waiting_days"
+          min="0"
+          step="1"
+          value="{{ form_data.get('waiting_days', 7) }}"
+        >
+
+      </div>
+
+    </div>
+
+
+
+    <!-- GRADE PHOTO UPLOAD (AI-assisted grade detection) -->
+
+    <div class="form-group" id="gradePhotoGroup">
+
+      <label for="crop_image">
+        {% if language == 'Hindi' %}
+          फसल की फोटो अपलोड करें (ग्रेड अपने आप पता करने के लिए)
+        {% else %}
+          Upload a crop photo (auto-detect grade)
+        {% endif %}
+      </label>
+
+      <div class="grade-photo-upload">
+        <input
+          type="file"
+          class="form-control"
+          id="crop_image"
+          name="crop_image"
+          accept="image/png, image/jpeg, image/webp"
+        >
+
+        <button type="button" class="btn btn-outline" id="detectGradeBtn">
+          {% if language == 'Hindi' %}
+            फोटो से ग्रेड पता करें
+          {% else %}
+            Detect Grade from Photo
+          {% endif %}
+        </button>
+      </div>
+
+      <p class="form-hint">
+        {% if language == 'Hindi' %}
+          यह एक सुझाव है — आप नीचे "गुणवत्ता श्रेणी" खुद भी बदल सकते हैं।
+        {% else %}
+          This is only a suggestion — you can still change "Quality Grade" above yourself.
+        {% endif %}
+      </p>
+
+      <div id="gradeDetectResult" style="display:none;"></div>
+
+    </div>
+
+
+
+    <!-- LOCATION -->
+
+    <div class="form-group">
+
+      <label for="location">
+
+        {% if language == 'Hindi' %}
+          आपका स्थान
+        {% else %}
+          Your Location
+        {% endif %}
+
+      </label>
+
+
+      <input
+        type="text"
+        class="form-control"
+        id="location"
+        name="location"
+        placeholder="{% if language == 'Hindi' %}जैसे आगरा, उत्तर प्रदेश{% else %}e.g. Agra, Uttar Pradesh{% endif %}"
+        value="{{ form_data.get('location', farmer.location_display) }}"
+        required
+      >
+
+
+      <small style="color:var(--text-muted);">
+
+        {% if language == 'Hindi' %}
+
+          आपका सहेजा गया प्रोफ़ाइल स्थान डिफ़ॉल्ट रूप से उपयोग किया जाता है —
+          आप केवल इस खोज के लिए इसे बदल सकते हैं।
+
+        {% else %}
+
+          Defaults to your saved profile location —
+          you can edit it for this search only.
+
+        {% endif %}
+
+      </small>
+
+    </div>
+
+
+
+    <!-- SUBMIT BUTTON -->
+
+    <button
+      type="submit"
+      class="btn btn-primary btn-block"
+    >
+
+      {% if language == 'Hindi' %}
+        सबसे अच्छा बाज़ार खोजें
+      {% else %}
+        Find Best Market
+      {% endif %}
+
+    </button>
+
+  </form>
+
+</div>
+
+
+
+<!-- ==================== INFORMATION NOTE ==================== -->
+
+<div
+  class="data-note text-center"
+  style="max-width:700px; margin:20px auto 0;"
+>
+
+  {% if language == 'Hindi' %}
+
+    आपकी खोज आपके खाते में सेव की जाती है और
+    मार्केट इंटेलिजेंस, AI सिफारिश, खरीदार मिलान और FPO स्क्रीन पर उपयोग की जाती है।
+    पिछली खोजें कभी भी
+
+    <a href="{{ url_for('history') }}">
+      मेरा इतिहास
+    </a>
+
+    में देखें।
+
+  {% else %}
+
+    Your search is saved to your account and used across the
+    Market Intelligence, AI Recommendation, Buyer Matching,
+    and FPO screens.
+    View past searches anytime in
+
+    <a href="{{ url_for('history') }}">
+      My History
+    </a>.
+
+  {% endif %}
+
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  const LANGUAGE = {{ language|tojson }};
+
+  const GRADE_LABELS = {
+    Hindi: { "Grade A": "ग्रेड A", "Grade B": "ग्रेड B", "Grade C": "ग्रेड C" },
+    English: { "Grade A": "Grade A", "Grade B": "Grade B", "Grade C": "Grade C" },
+  };
+
+  const TEXT = {
+    detecting: LANGUAGE === "Hindi" ? "फोटो जांची जा रही है..." : "Analysing photo...",
+    choosePhoto: LANGUAGE === "Hindi" ? "कृपया पहले एक फोटो चुनें।" : "Please choose a photo first.",
+    suggested: LANGUAGE === "Hindi" ? "सुझाई गई श्रेणी:" : "Suggested grade:",
+    confidence: LANGUAGE === "Hindi" ? "भरोसा" : "confidence",
+    applied: LANGUAGE === "Hindi"
+      ? "\"गुणवत्ता श्रेणी\" में अपने आप चुन दी गई है — चाहें तो बदल सकते हैं।"
+      : "Applied to \"Quality Grade\" below — you can still change it.",
+    genericError: LANGUAGE === "Hindi"
+      ? "फोटो जांचने में समस्या हुई, कृपया दोबारा कोशिश करें।"
+      : "Something went wrong analysing the photo. Please try again.",
+  };
+
+  const fileInput = document.getElementById("crop_image");
+  const detectBtn = document.getElementById("detectGradeBtn");
+  const resultBox = document.getElementById("gradeDetectResult");
+  const qualitySelect = document.getElementById("quality");
+
+  if (!fileInput || !detectBtn || !resultBox || !qualitySelect) return;
+
+  function showPreviewAndResult(html, isError) {
+    resultBox.innerHTML = html;
+    resultBox.style.display = "block";
+    resultBox.className = isError ? "grade-result-card grade-error" : "grade-result-card";
+  }
+
+  detectBtn.addEventListener("click", async function () {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) {
+      showPreviewAndResult(TEXT.choosePhoto, true);
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+
+    detectBtn.disabled = true;
+    const originalLabel = detectBtn.textContent;
+    detectBtn.textContent = TEXT.detecting;
+    showPreviewAndResult(
+      '<img class="grade-preview-img" src="' + previewUrl + '" alt="preview">' +
+      '<p>' + TEXT.detecting + '</p>',
+      false
+    );
+
+    const formData = new FormData();
+    formData.append("crop_image", file);
+
+    try {
+      const response = await fetch("{{ url_for('predict_grade') }}", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        showPreviewAndResult(
+          '<img class="grade-preview-img" src="' + previewUrl + '" alt="preview">' +
+          '<p>' + (data.error || TEXT.genericError) + '</p>',
+          true
+        );
+        return;
+      }
+
+      const gradeLabel = (GRADE_LABELS[LANGUAGE] || GRADE_LABELS.English)[data.grade] || data.grade;
+      const confidencePct = Math.round((data.confidence || 0) * 100);
+      const reasonsHtml = (data.reasons || [])
+        .map(function (r) { return "<li>" + r + "</li>"; })
+        .join("");
+
+      showPreviewAndResult(
+        '<img class="grade-preview-img" src="' + previewUrl + '" alt="preview">' +
+        '<p><span class="grade-result-badge">' + gradeLabel + '</span>' +
+        TEXT.suggested + ' ' + gradeLabel +
+        ' (' + confidencePct + '% ' + TEXT.confidence + ')</p>' +
+        '<ul class="grade-result-reasons">' + reasonsHtml + '</ul>' +
+        '<p>' + TEXT.applied + '</p>',
+        false
+      );
+
+      // Auto-select the matching option in the Quality Grade dropdown.
+      for (const option of qualitySelect.options) {
+        if (option.value === data.grade) {
+          qualitySelect.value = data.grade;
+          break;
+        }
+      }
+    } catch (err) {
+      showPreviewAndResult(
+        '<img class="grade-preview-img" src="' + previewUrl + '" alt="preview">' +
+        '<p>' + TEXT.genericError + '</p>',
+        true
+      );
+    } finally {
+      detectBtn.disabled = false;
+      detectBtn.textContent = originalLabel;
+    }
+  });
+})();
+</script>
+{% endblock %}

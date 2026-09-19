@@ -1,0 +1,730 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if language == 'Hindi' %}
+    AI सिफारिश - MarketMinds
+  {% else %}
+    AI Recommendation - MarketMinds
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+  <h1>
+    {% if language == 'Hindi' %}
+      AI सिफारिश
+    {% else %}
+      AI Recommendation
+    {% endif %}
+  </h1>
+
+  <p>
+
+    {% if language == 'Hindi' %}
+
+      {{ farmer_input.quantity }} क्विंटल
+      {{
+        {
+          'Tomato':'टमाटर',
+          'Onion':'प्याज़',
+          'Potato':'आलू',
+          'Wheat':'गेहूं',
+          'Rice':'चावल',
+          'Maize':'मक्का',
+          'Cotton':'कपास',
+          'Sugarcane':'गन्ना',
+          'Mustard':'सरसों',
+          'Soybean':'सोयाबीन',
+          'Peas':'मटर',
+          'Carrot':'गाजर',
+          'Cabbage':'पत्तागोभी',
+          'Cauliflower':'फूलगोभी'
+        }.get(farmer_input.crop, farmer_input.crop)
+      }}
+      के लिए हमारा सर्वोत्तम विकल्प।
+
+    {% else %}
+
+      Our best calculated option for
+      {{ farmer_input.quantity }} quintals of {{ farmer_input.crop }}.
+
+    {% endif %}
+
+  </p>
+
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- BEST RECOMMENDATION -->
+<!-- ========================================================= -->
+
+<div class="recommend-hero">
+
+  <div
+    class="label"
+    style="
+      color:var(--text-muted);
+      font-weight:600;
+      font-size:0.85rem;
+      text-transform:uppercase;
+    "
+  >
+
+    {% if language == 'Hindi' %}
+      सर्वोत्तम विकल्प
+    {% else %}
+      Best Option
+    {% endif %}
+
+  </div>
+
+
+  <div class="best-market-name">
+
+    {% if language == 'Hindi' %}
+
+      {{
+        {
+          'Agra Mandi':'आगरा मंडी',
+          'Delhi Azadpur Mandi':'दिल्ली आज़ादपुर मंडी',
+          'Azadpur Mandi':'आज़ादपुर मंडी',
+          'Lucknow Mandi':'लखनऊ मंडी',
+          'Jaipur Mandi':'जयपुर मंडी',
+          'Kanpur Mandi':'कानपुर मंडी',
+          'Ghazipur Mandi':'गाज़ीपुर मंडी',
+          'Khurja Mandi':'खुर्जा मंडी',
+          'Noida Mandi':'नोएडा मंडी',
+          'Meerut Mandi':'मेरठ मंडी',
+          'Greater Noida Mandi':'ग्रेटर नोएडा मंडी'
+        }.get(best.market, best.market)
+      }},
+
+      {{
+        {
+          'Agra':'आगरा',
+          'Delhi':'दिल्ली',
+          'Lucknow':'लखनऊ',
+          'Jaipur':'जयपुर',
+          'Kanpur':'कानपुर',
+          'Ghazipur':'गाज़ीपुर',
+          'Khurja':'खुर्जा',
+          'Noida':'नोएडा',
+          'Meerut':'मेरठ',
+          'Gautam Buddh Nagar':'गौतम बुद्ध नगर'
+        }.get(best.district, best.district)
+      }}
+
+    {% else %}
+
+      {{ best.market }}, {{ best.district }}
+
+    {% endif %}
+
+  </div>
+
+
+
+  <!-- ========================================================= -->
+  <!-- STATS -->
+  <!-- ========================================================= -->
+
+  <div class="stat-grid">
+
+
+    <!-- CURRENT PRICE -->
+
+    <div class="stat-box">
+
+      <div class="label">
+
+        {% if language == 'Hindi' %}
+          वर्तमान कीमत
+        {% else %}
+          Current Price
+        {% endif %}
+
+      </div>
+
+      <div class="value">
+        ₹{{ "%.2f"|format(best.current_price) }}
+      </div>
+
+    </div>
+
+
+
+    <!-- PREDICTED PRICE -->
+
+    <div class="stat-box">
+
+      <div class="label">
+
+        {% if language == 'Hindi' %}
+          अनुमानित कीमत
+        {% else %}
+          Predicted Price
+        {% endif %}
+
+      </div>
+
+      <div class="value">
+        ₹{{ "%.2f"|format(best.predicted_price) }}
+      </div>
+
+    </div>
+
+
+
+    <!-- QUANTITY -->
+
+    <div class="stat-box">
+
+      <div class="label">
+
+        {% if language == 'Hindi' %}
+          मात्रा
+        {% else %}
+          Quantity
+        {% endif %}
+
+      </div>
+
+      <div class="value">
+
+        {{ best.quantity }}
+
+        {% if language == 'Hindi' %}
+          क्विंटल
+        {% else %}
+          qtl
+        {% endif %}
+
+      </div>
+
+    </div>
+
+
+
+    <!-- TRANSPORT COST -->
+
+    <div class="stat-box">
+
+      <div class="label">
+
+        {% if language == 'Hindi' %}
+          परिवहन लागत
+        {% else %}
+          Transport Cost
+        {% endif %}
+
+      </div>
+
+      <div class="value">
+        ₹{{ "%.2f"|format(best.transport_cost) }}
+      </div>
+
+    </div>
+
+
+
+    <!-- STORAGE COST -->
+
+    <div class="stat-box">
+
+      <div class="label">
+
+        {% if language == 'Hindi' %}
+          भंडारण लागत
+        {% else %}
+          Storage Cost
+        {% endif %}
+
+      </div>
+
+      <div class="value">
+        ₹{{ "%.2f"|format(best.storage_cost) }}
+      </div>
+
+    </div>
+
+
+
+    <!-- EXPECTED REVENUE -->
+
+    <div class="stat-box">
+
+      <div class="label">
+
+        {% if language == 'Hindi' %}
+          अपेक्षित आय
+        {% else %}
+          Expected Revenue
+        {% endif %}
+
+      </div>
+
+      <div class="value">
+        ₹{{ "%.2f"|format(best.expected_revenue) }}
+      </div>
+
+    </div>
+
+
+
+    <!-- NET PROFIT -->
+
+    <div class="stat-box profit">
+
+      <div class="label">
+
+        {% if language == 'Hindi' %}
+          अपेक्षित शुद्ध लाभ
+        {% else %}
+          Expected Net Profit
+        {% endif %}
+
+      </div>
+
+      <div class="value">
+        ₹{{ "%.2f"|format(best.expected_net_profit) }}
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ========================================================= -->
+  <!-- PROFIT EXPLANATION -->
+  <!-- ========================================================= -->
+
+  <p
+    style="
+      color:var(--text-muted);
+      font-size:0.88rem;
+      margin:6px 0 0;
+    "
+  >
+
+    💡
+
+    {% if language == 'Hindi' %}
+
+      सरल शब्दों में — यह
+      <strong>लागत घटाने के बाद आपको मिलने वाली अनुमानित राशि</strong>
+      है।
+
+      (परिवहन, भंडारण और अन्य शुल्क पहले ही घटाए जा चुके हैं।)
+
+    {% else %}
+
+      In simple terms — this is the
+      <strong>Estimated Money You May Receive After Costs</strong>
+      (transport, storage, and other charges already subtracted).
+
+    {% endif %}
+
+  </p>
+
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- SELL NOW VS WAIT -->
+<!-- ========================================================= -->
+
+<h2 class="section-title">
+
+  {% if language == 'Hindi' %}
+    अभी बेचें या प्रतीक्षा करें
+  {% else %}
+    Sell Now vs Wait
+  {% endif %}
+
+</h2>
+
+
+
+<div
+  class="decision-banner
+  {{ 'sell-now' if decision.decision == 'SELL NOW' else 'wait' }}"
+>
+
+  <div class="decision-icon">
+
+    {{ '⚡' if decision.decision == 'SELL NOW' else '⏳' }}
+
+  </div>
+
+
+  <div>
+
+    <div class="decision-label">
+
+      {% if language == 'Hindi' %}
+
+        {% if decision.decision == 'SELL NOW' %}
+          अभी बेचें
+        {% else %}
+          प्रतीक्षा करें
+        {% endif %}
+
+      {% else %}
+
+        {{ decision.decision }}
+
+      {% endif %}
+
+    </div>
+
+
+
+    <!-- ===================================================== -->
+    <!-- DECISION REASON -->
+    <!-- ===================================================== -->
+
+    <div
+      style="
+        margin-top:6px;
+        font-size:0.95rem;
+      "
+    >
+
+      {% if language == 'Hindi' %}
+
+        {% if decision.decision == 'SELL NOW' %}
+
+          अभी बेचने की सलाह दी जाती है क्योंकि
+          प्रतीक्षा करने की तुलना में अभी बेचने पर
+          बेहतर आर्थिक लाभ मिलने की उम्मीद है।
+
+          {% if decision.expected_additional_benefit is defined
+                and decision.expected_additional_benefit > 0 %}
+
+            अनुमानित अतिरिक्त लाभ:
+            ₹{{ "%.2f"|format(decision.expected_additional_benefit) }}।
+
+          {% endif %}
+
+          {% if decision.waiting_days is defined %}
+
+            {{ decision.waiting_days }} दिन प्रतीक्षा करने पर
+            भंडारण लागत और फसल की खराब होने की संभावना
+            लाभ को प्रभावित कर सकती है।
+
+          {% endif %}
+
+
+        {% else %}
+
+          प्रतीक्षा करने की सलाह दी जाती है क्योंकि
+          भविष्य में कीमत बढ़ने से आपको बेहतर लाभ मिलने
+          की संभावना है।
+
+          {% if decision.expected_additional_benefit is defined
+                and decision.expected_additional_benefit > 0 %}
+
+            अनुमानित अतिरिक्त लाभ:
+            ₹{{ "%.2f"|format(decision.expected_additional_benefit) }}।
+
+          {% endif %}
+
+        {% endif %}
+
+
+      {% else %}
+
+        {{ decision.reason }}
+
+      {% endif %}
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- DECISION STATS -->
+<!-- ========================================================= -->
+
+<div class="stat-grid">
+
+
+  <!-- PROFIT IF SOLD NOW -->
+
+  <div class="stat-box">
+
+    <div class="label">
+
+      {% if language == 'Hindi' %}
+        अभी बेचने पर लाभ
+      {% else %}
+        Profit If Sold Now
+      {% endif %}
+
+    </div>
+
+    <div class="value">
+      ₹{{ "%.2f"|format(decision.profit_if_sold_now) }}
+    </div>
+
+  </div>
+
+
+
+  <!-- EXPECTED PROFIT IF WAITING -->
+
+  <div class="stat-box">
+
+    <div class="label">
+
+      {% if language == 'Hindi' %}
+        प्रतीक्षा करने पर अपेक्षित लाभ
+      {% else %}
+        Expected Profit If Waiting
+      {% endif %}
+
+    </div>
+
+    <div class="value">
+      ₹{{ "%.2f"|format(decision.expected_profit_if_waiting) }}
+    </div>
+
+  </div>
+
+
+
+  <!-- STORAGE COST -->
+
+  <div class="stat-box">
+
+    <div class="label">
+
+      {% if language == 'Hindi' %}
+
+        भंडारण लागत
+        ({{ decision.waiting_days }} दिन)
+
+      {% else %}
+
+        Storage Cost
+        ({{ decision.waiting_days }} days)
+
+      {% endif %}
+
+    </div>
+
+    <div class="value">
+      ₹{{ "%.2f"|format(decision.storage_cost) }}
+    </div>
+
+  </div>
+
+
+
+  <!-- ADDITIONAL BENEFIT -->
+
+  <div class="stat-box">
+
+    <div class="label">
+
+      {% if language == 'Hindi' %}
+        अपेक्षित अतिरिक्त लाभ
+      {% else %}
+        Expected Additional Benefit
+      {% endif %}
+
+    </div>
+
+    <div class="value">
+      ₹{{ "%.2f"|format(decision.expected_additional_benefit) }}
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- WHY RECOMMENDATION -->
+<!-- ========================================================= -->
+
+<h2 class="section-title">
+
+  {% if language == 'Hindi' %}
+    यह सिफारिश क्यों?
+  {% else %}
+    Why This Recommendation?
+  {% endif %}
+
+</h2>
+
+
+
+<div class="card">
+
+  <ul class="reason-list">
+
+
+    {% for reason in best.reasons %}
+
+      <li>
+
+        {% if language == 'Hindi' %}
+
+          {% set r = reason.lower() %}
+
+
+          <!-- BUYER DEMAND -->
+
+          {% if 'buyer demand' in r
+                or 'buyer' in r and 'demand' in r %}
+
+            पास के क्षेत्र में खरीदारों की मांग मजबूत है।
+
+            {% if 'scores' in r %}
+
+              खरीदार की रेटिंग
+              {{ reason.split('scores')[1].split('/100')[0] }}/100 है।
+
+            {% endif %}
+
+
+          <!-- PROFIT -->
+
+          {% elif 'profit' in r
+                or 'net profit' in r %}
+
+            इस बाज़ार में अपेक्षित शुद्ध लाभ अधिक है।
+
+
+          <!-- TRANSPORT -->
+
+          {% elif 'transport' in r
+                or 'transportation' in r %}
+
+            इस बाज़ार तक परिवहन लागत अनुकूल है।
+
+
+          <!-- PRICE -->
+
+          {% elif 'price' in r
+                or 'predicted' in r %}
+
+            अनुमानित कीमत इस बाज़ार के लिए अनुकूल है।
+
+
+          <!-- DISTANCE -->
+
+          {% elif 'distance' in r
+                or 'nearby' in r %}
+
+            यह बाज़ार उचित दूरी पर स्थित है।
+
+
+          <!-- STORAGE -->
+
+          {% elif 'storage' in r %}
+
+            इस विकल्प में भंडारण लागत अपेक्षाकृत अनुकूल है।
+
+
+          <!-- MARKET -->
+
+          {% elif 'market' in r %}
+
+            यह बाज़ार उपलब्ध कीमत और लागत के आधार पर
+            बेहतर विकल्प है।
+
+
+          <!-- DEFAULT -->
+
+          {% else %}
+
+            यह बाज़ार उपलब्ध कीमत, लागत और लाभ के आधार पर
+            बेहतर विकल्प है।
+
+          {% endif %}
+
+
+        {% else %}
+
+          {{ reason }}
+
+        {% endif %}
+
+      </li>
+
+    {% endfor %}
+
+  </ul>
+
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- BUTTONS -->
+<!-- ========================================================= -->
+
+<div
+  class="text-center"
+  style="margin-top:30px;"
+>
+
+
+  <!-- BUYERS -->
+
+  <a
+    href="{{ url_for('buyers') }}"
+    class="btn btn-primary"
+  >
+
+    {% if language == 'Hindi' %}
+
+      मिलान करने वाले खरीदार खोजें
+
+    {% else %}
+
+      Find Matching Buyers
+
+    {% endif %}
+
+  </a>
+
+
+
+  <!-- MARKET -->
+
+  <a
+    href="{{ url_for('market') }}"
+    class="btn btn-outline"
+  >
+
+    {% if language == 'Hindi' %}
+
+      बाज़ार इंटेलिजेंस पर वापस जाएं
+
+    {% else %}
+
+      Back to Market Intelligence
+
+    {% endif %}
+
+  </a>
+
+</div>
+
+
+{% endblock %}

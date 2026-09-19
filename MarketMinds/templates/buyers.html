@@ -1,0 +1,698 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if language == 'Hindi' %}
+        खरीदार मिलान - MarketMinds
+    {% else %}
+        Buyer Matching - MarketMinds
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{# ================= TRANSLATION DICTIONARIES ================= #}
+
+{% set crop_names = {
+    'Tomato':'टमाटर',
+    'Onion':'प्याज़',
+    'Potato':'आलू',
+    'Wheat':'गेहूं',
+    'Rice':'चावल',
+    'Maize':'मक्का',
+    'Cotton':'कपास',
+    'Sugarcane':'गन्ना',
+    'Mustard':'सरसों',
+    'Soybean':'सोयाबीन',
+    'Peas':'मटर',
+    'Carrot':'गाजर',
+    'Cabbage':'पत्तागोभी',
+    'Cauliflower':'फूलगोभी'
+} %}
+
+{% set quality_names = {
+    'Grade A':'ग्रेड A',
+    'Grade B':'ग्रेड B',
+    'Grade C':'ग्रेड C',
+    'Premium':'प्रीमियम',
+    'Standard':'मानक',
+    'Average':'औसत',
+    'Good':'अच्छी',
+    'Poor':'निम्न'
+} %}
+
+{# Buyer names coming from backend/database #}
+{% set buyer_names = {
+    'Bharat Wholesale Foods':'भारत होलसेल फूड्स',
+    'Farm2City Buyers':'फार्म2सिटी बायर्स',
+    'UP Grain Merchants':'यूपी ग्रेन मर्चेंट्स',
+    'AgroFresh Traders':'एग्रोफ्रेश ट्रेडर्स',
+    'Northern Spice & Veg Co.':'नॉर्दर्न स्पाइस एंड वेज कंपनी',
+    'FreshMart Distributors':'फ्रेशमार्ट डिस्ट्रीब्यूटर्स',
+    'Green Valley Traders':'ग्रीन वैली ट्रेडर्स',
+    'Kisan Direct Buyers':'किसान डायरेक्ट बायर्स',
+    'AgriTrade Solutions':'एग्रीट्रेड सॉल्यूशंस',
+    'Farm Fresh India':'फार्म फ्रेश इंडिया',
+    'National Agro Traders':'नेशनल एग्रो ट्रेडर्स',
+    'Shakti Foods':'शक्ति फूड्स',
+    'Krishi Connect':'कृषि कनेक्ट',
+    'Delhi Fresh Market':'दिल्ली फ्रेश मार्केट',
+    'UP Agro Buyers':'यूपी एग्रो बायर्स',
+    'Bharat Agro Foods':'भारत एग्रो फूड्स',
+    'Fresh Crop Traders':'फ्रेश क्रॉप ट्रेडर्स',
+    'Kisan Wholesale':'किसान होलसेल',
+    'Agro India Traders':'एग्रो इंडिया ट्रेडर्स',
+    'Green Farm Buyers':'ग्रीन फार्म बायर्स'
+} %}
+
+
+<div class="page-header">
+
+    <h1>
+        {% if language == 'Hindi' %}
+            खरीदार मिलान
+        {% else %}
+            Buyer Matching
+        {% endif %}
+    </h1>
+
+    <p>
+
+        {% if language == 'Hindi' %}
+
+            {{ farmer_input.quantity }} क्विंटल
+
+            {{ crop_names.get(farmer_input.crop, farmer_input.crop) }}
+
+            {% if farmer_input.quality %}
+                ({{ quality_names.get(farmer_input.quality, farmer_input.quality) }})
+            {% endif %}
+
+            के लिए सबसे उपयुक्त खरीदार।
+
+        {% else %}
+
+            Best-suited buyers for
+            {{ farmer_input.quantity }} quintals of
+            {{ farmer_input.crop }}
+
+            {% if farmer_input.quality %}
+                ({{ farmer_input.quality }})
+            {% endif %}.
+
+        {% endif %}
+
+    </p>
+
+</div>
+
+
+{% if best_buyer %}
+
+<div class="recommend-hero">
+
+    <!-- ================= BEST BUYER ================= -->
+
+    <div
+        class="label"
+        style="
+            color:var(--text-muted);
+            font-weight:600;
+            font-size:0.85rem;
+            text-transform:uppercase;
+        "
+    >
+
+        {% if language == 'Hindi' %}
+            सर्वश्रेष्ठ खरीदार मिलान
+        {% else %}
+            Best Buyer Match
+        {% endif %}
+
+    </div>
+
+
+    <!-- ================= BUYER NAME ================= -->
+
+    <div class="best-market-name">
+
+        {% if language == 'Hindi' %}
+            {{ buyer_names.get(best_buyer.buyer_name, best_buyer.buyer_name) }}
+        {% else %}
+            {{ best_buyer.buyer_name }}
+        {% endif %}
+
+        <span class="badge badge-success">
+            {{ "%.2f"|format(best_buyer.match_score) }}/100
+        </span>
+
+    </div>
+
+
+    <!-- ================= BUYER STATS ================= -->
+
+    <div class="stat-grid">
+
+        <!-- MATCH SCORE -->
+
+        <div class="stat-box">
+
+            <div class="label">
+
+                {% if language == 'Hindi' %}
+                    मिलान स्कोर
+                {% else %}
+                    Match Score
+                {% endif %}
+
+            </div>
+
+            <div class="value">
+                {{ "%.2f"|format(best_buyer.match_score) }}/100
+            </div>
+
+        </div>
+
+
+        <!-- PRICE -->
+
+        <div class="stat-box">
+
+            <div class="label">
+
+                {% if language == 'Hindi' %}
+                    प्रस्तावित कीमत
+                {% else %}
+                    Price Offered
+                {% endif %}
+
+            </div>
+
+            <div class="value">
+                ₹{{ "%.2f"|format(best_buyer.price_offered) }}
+            </div>
+
+        </div>
+
+
+        <!-- QUANTITY -->
+
+        <div class="stat-box">
+
+            <div class="label">
+
+                {% if language == 'Hindi' %}
+                    आवश्यक मात्रा
+                {% else %}
+                    Quantity Required
+                {% endif %}
+
+            </div>
+
+            <div class="value">
+
+                {{ best_buyer.quantity_required }}
+
+                {% if language == 'Hindi' %}
+                    क्विंटल
+                {% else %}
+                    qtl
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- DISTANCE -->
+
+        <div class="stat-box">
+
+            <div class="label">
+
+                {% if language == 'Hindi' %}
+                    दूरी
+                {% else %}
+                    Distance
+                {% endif %}
+
+            </div>
+
+            <div class="value">
+
+                {{ "%.0f"|format(best_buyer.distance_km) }}
+
+                {% if language == 'Hindi' %}
+                    किमी
+                {% else %}
+                    km
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- RELIABILITY -->
+
+        <div class="stat-box">
+
+            <div class="label">
+
+                {% if language == 'Hindi' %}
+                    विश्वसनीयता स्कोर
+                {% else %}
+                    Reliability Score
+                {% endif %}
+
+            </div>
+
+            <div class="value">
+                {{ "%.1f"|format(best_buyer.reliability_score) }}/100
+            </div>
+
+        </div>
+
+
+        <!-- VERIFICATION -->
+
+        <div class="stat-box">
+
+            <div class="label">
+
+                {% if language == 'Hindi' %}
+                    सत्यापन स्थिति
+                {% else %}
+                    Verification Status
+                {% endif %}
+
+            </div>
+
+            <div class="value">
+
+                {% if best_buyer.verified %}
+
+                    <span class="badge badge-success">
+
+                        {% if language == 'Hindi' %}
+                            सत्यापित
+                        {% else %}
+                            Verified
+                        {% endif %}
+
+                    </span>
+
+                {% else %}
+
+                    <span class="badge badge-warning">
+
+                        {% if language == 'Hindi' %}
+                            असत्यापित
+                        {% else %}
+                            Unverified
+                        {% endif %}
+
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SCORE BREAKDOWN ================= -->
+
+    <div class="score-breakdown">
+
+        <h3
+            style="
+                margin-top:24px;
+                font-size:1rem;
+                color:var(--primary-dark);
+            "
+        >
+
+            {% if language == 'Hindi' %}
+                मिलान स्कोर का विवरण
+            {% else %}
+                Match Score Breakdown
+            {% endif %}
+
+        </h3>
+
+
+        {% for label, max_pts, key in [
+
+            ("Crop Match", 25, "crop_match"),
+
+            ("Quantity Compat.", 15, "quantity_compat"),
+
+            ("Price Score", 20, "price_score"),
+
+            ("Distance Score", 10, "distance_score"),
+
+            ("Reliability", 15, "reliability_score")
+
+        ] %}
+
+
+        <div class="score-row">
+
+            <span>
+
+                {% if language == 'Hindi' %}
+
+                    {% if key == 'crop_match' %}
+                        फसल मिलान
+
+                    {% elif key == 'quality_match' %}
+                        गुणवत्ता मिलान
+
+                    {% elif key == 'quantity_compat' %}
+                        मात्रा अनुकूलता
+
+                    {% elif key == 'price_score' %}
+                        कीमत स्कोर
+
+                    {% elif key == 'distance_score' %}
+                        दूरी स्कोर
+
+                    {% elif key == 'reliability_score' %}
+                        विश्वसनीयता
+
+                    {% endif %}
+
+                {% else %}
+
+                    {{ label }}
+
+                {% endif %}
+
+            </span>
+
+
+            <div class="score-bar-bg">
+
+                <div
+                    class="score-bar-fill"
+                    style="
+                        width:
+                        { (best_buyer.score_breakdown[key] / max_pts * 100)
+                           if max_pts else 0 };
+                    "
+                ></div>
+
+            </div>
+
+
+            <span>
+                {{ best_buyer.score_breakdown[key] }}/{{ max_pts }}
+            </span>
+
+        </div>
+
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- ================= CONTINUE ================= -->
+
+    <div style="margin-top:22px;">
+
+        <a
+            href="{{ url_for('buyer_details', buyer_id=best_buyer.buyer_id) }}"
+            class="btn btn-primary"
+            style="
+                display:inline-block;
+                width:100%;
+                max-width:320px;
+                text-align:center;
+                text-decoration:none;
+                box-sizing:border-box;
+            "
+        >
+
+            {% if language == 'Hindi' %}
+                इस खरीदार के साथ आगे बढ़ें →
+            {% else %}
+                Continue with this Buyer →
+            {% endif %}
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- ================= OTHER BUYERS ================= -->
+
+{% if other_buyers %}
+
+<h2 class="section-title">
+
+    {% if language == 'Hindi' %}
+        अन्य उपयुक्त खरीदार
+    {% else %}
+        Other Suitable Buyers
+    {% endif %}
+
+</h2>
+
+
+<div class="table-wrap">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    {% if language == 'Hindi' %}
+                        खरीदार
+                    {% else %}
+                        Buyer
+                    {% endif %}
+                </th>
+
+                <th>
+                    {% if language == 'Hindi' %}
+                        मिलान स्कोर
+                    {% else %}
+                        Match Score
+                    {% endif %}
+                </th>
+
+                <th>
+                    {% if language == 'Hindi' %}
+                        प्रस्तावित कीमत
+                    {% else %}
+                        Price Offered
+                    {% endif %}
+                </th>
+
+                <th>
+                    {% if language == 'Hindi' %}
+                        आवश्यक मात्रा
+                    {% else %}
+                        Quantity Req.
+                    {% endif %}
+                </th>
+
+                <th>
+                    {% if language == 'Hindi' %}
+                        दूरी (किमी)
+                    {% else %}
+                        Distance (km)
+                    {% endif %}
+                </th>
+
+                <th>
+                    {% if language == 'Hindi' %}
+                        विश्वसनीयता
+                    {% else %}
+                        Reliability
+                    {% endif %}
+                </th>
+
+                <th>
+                    {% if language == 'Hindi' %}
+                        सत्यापित
+                    {% else %}
+                        Verified
+                    {% endif %}
+                </th>
+
+                <th></th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+            {% for b in other_buyers %}
+
+            <tr>
+
+                <!-- BUYER NAME -->
+
+                <td>
+
+                    {% if language == 'Hindi' %}
+                        {{ buyer_names.get(b.buyer_name, b.buyer_name) }}
+                    {% else %}
+                        {{ b.buyer_name }}
+                    {% endif %}
+
+                </td>
+
+
+                <!-- MATCH SCORE -->
+
+                <td>
+                    {{ "%.2f"|format(b.match_score) }}/100
+                </td>
+
+
+                <!-- PRICE -->
+
+                <td>
+                    ₹{{ "%.2f"|format(b.price_offered) }}
+                </td>
+
+
+                <!-- QUANTITY -->
+
+                <td>
+
+                    {{ b.quantity_required }}
+
+                    {% if language == 'Hindi' %}
+                        क्विंटल
+                    {% else %}
+                        qtl
+                    {% endif %}
+
+                </td>
+
+
+                <!-- DISTANCE -->
+
+                <td>
+
+                    {{ "%.0f"|format(b.distance_km) }}
+
+                    {% if language == 'Hindi' %}
+                        किमी
+                    {% else %}
+                        km
+                    {% endif %}
+
+                </td>
+
+
+                <!-- RELIABILITY -->
+
+                <td>
+                    {{ "%.1f"|format(b.reliability_score) }}/100
+                </td>
+
+
+                <!-- VERIFIED -->
+
+                <td>
+
+                    {% if b.verified %}
+
+                        <span class="badge badge-success">
+
+                            {% if language == 'Hindi' %}
+                                हाँ
+                            {% else %}
+                                Yes
+                            {% endif %}
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge badge-warning">
+
+                            {% if language == 'Hindi' %}
+                                नहीं
+                            {% else %}
+                                No
+                            {% endif %}
+
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+                    <a href="{{ url_for('buyer_details', buyer_id=b.buyer_id) }}" style="color:var(--primary-dark); font-weight:600;">
+                        {% if language == 'Hindi' %}विवरण{% else %}Details{% endif %}
+                    </a>
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endif %}
+
+
+<!-- ================= FPO ================= -->
+
+<div
+    class="text-center"
+    style="margin-top:30px;"
+>
+
+    <a
+        href="{{ url_for('fpo') }}"
+        class="btn btn-primary"
+    >
+
+        {% if language == 'Hindi' %}
+            FPO एकत्रीकरण देखें
+        {% else %}
+            Explore FPO Aggregation
+        {% endif %}
+
+    </a>
+
+</div>
+
+
+{% else %}
+
+<!-- ================= NO BUYER ================= -->
+
+<div class="alert alert-warning">
+
+    {% if language == 'Hindi' %}
+        इस फसल के लिए वर्तमान में कोई खरीदार सूचीबद्ध नहीं है।
+    {% else %}
+        No buyers currently listed for this crop.
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,25 @@
+Buyer_ID,Buyer_Name,Crop,Quantity_Required,Quality,Price_Offered,Location,Distance_KM,Payment_Score,Dispute_Score,Verified,Contact_Phone,Contact_Email
+B001,AgroFresh Traders,Potato,100,Grade A,1096.35,Lucknow,20,60,12,1,+91 79985 31796,sales@agrofreshtraders.example.com
+B002,Bharat Wholesale Foods,Potato,200,Grade C,1330.93,Kanpur,10,84,17,1,+91 62423 11921,sales@bharatwholesalefoods.example.com
+B003,Green Valley Exports,Wheat,80,Grade C,2261.57,Kanpur,90,91,6,1,+91 82941 86255,sales@greenvalleyexports.example.com
+B004,National Vegetable Suppliers,Tomato,120,Grade B,1444.45,Delhi,45,61,12,1,+91 76053 09983,sales@nationalvegetablesuppliers.example.com
+B005,Sunrise Agro Mart,Wheat,200,Grade A,2288.88,Lucknow,90,68,21,1,+91 69119 55196,sales@sunriseagromart.example.com
+B006,Delhi Fresh Produce Co.,Tomato,100,Grade C,1319.78,Noida,45,65,14,0,+91 99251 72180,sales@delhifreshproduceco.example.com
+B007,Farm2City Buyers,Potato,120,Grade C,1139.31,Lucknow,10,69,26,1,+91 95020 73158,sales@farm2citybuyers.example.com
+B008,UP Grain Merchants,Potato,250,Grade B,1175.65,Delhi,45,91,28,1,+91 86960 78584,sales@upgrainmerchants.example.com
+B009,Golden Harvest Trading,Onion,300,Grade B,1887.07,Aligarh,180,64,8,1,+91 66263 15354,sales@goldenharvesttrading.example.com
+B010,Metro Mandi Buyers,Onion,150,Grade C,1714.55,Meerut,130,92,12,1,+91 81915 99559,sales@metromandibuyers.example.com
+B011,Rajasthan Foodgrains Ltd.,Onion,100,Grade C,1672.35,Bhopal,20,58,27,1,+91 88769 01302,sales@rajasthanfoodgrainsltd.example.com
+B012,Kisan Mitra Procurement,Onion,100,Grade C,2056.55,Jaipur,20,79,12,0,+91 76710 72464,sales@kisanmitraprocurement.example.com
+B013,City Retail Chain Buyers,Rice,150,Grade C,2535.39,Greater Noida,20,98,28,1,+91 72722 36333,sales@cityretailchainbuyers.example.com
+B014,Northern Spice & Veg Co.,Potato,80,Grade B,1320.81,Jaipur,35,84,0,1,+91 91707 31069,sales@northernspicevegco.example.com
+B015,Fresh Route Logistics,Rice,100,Grade C,3071.62,Delhi,60,95,16,1,+91 85562 10381,sales@freshroutelogistics.example.com
+B016,Annapurna Agro Foods,Onion,200,Grade A,1753.75,Ghaziabad,240,55,19,1,+91 80501 73498,sales@annapurnaagrofoods.example.com
+B017,Rural Link Traders,Wheat,50,Grade A,2054.59,Lucknow,60,70,1,1,+91 66929 61197,sales@rurallinktraders.example.com
+B018,Highway Mandi Buyers,Rice,80,Grade A,2621.94,Noida,180,59,24,1,+91 70655 20880,sales@highwaymandibuyers.example.com
+B019,Prime Produce Exporters,Onion,300,Grade C,1933.84,Agra,60,88,27,0,+91 76795 43429,sales@primeproduceexporters.example.com
+B020,Local Bazaar Aggregators,Onion,120,Grade C,1909.26,Kanpur,130,97,20,1,+91 91290 09391,sales@localbazaaraggregators.example.com
+B021,Agri Bridge Buyers,Wheat,300,Grade A,2410.51,Mathura,45,59,10,1,+91 88496 95855,sales@agribridgebuyers.example.com
+B022,Wholesome Grains Pvt Ltd,Rice,120,Grade C,3176.24,Mathura,10,59,22,1,+91 60937 79583,sales@wholesomegrainspvtltd.example.com
+B023,Vegex India,Onion,80,Grade A,1931.37,Lucknow,20,87,7,1,+91 61115 41319,sales@vegexindia.example.com
+B024,Mandi Direct Buyers,Wheat,120,Grade C,2065.72,Agra,180,70,25,0,+91 82437 93601,sales@mandidirectbuyers.example.com

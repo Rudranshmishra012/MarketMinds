@@ -1,0 +1,511 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if language == 'Hindi' %}FPO एकत्रीकरण - MarketMinds{% else %}FPO Aggregation - MarketMinds{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+  <h1>
+    {% if language == 'Hindi' %}
+      FPO एकत्रीकरण
+    {% else %}
+      FPO Aggregation
+    {% endif %}
+  </h1>
+
+  <p>
+    {% if language == 'Hindi' %}
+      बड़े खरीदारों की मांग पूरी करने के लिए
+      किसान उत्पादक संगठन (FPO) के माध्यम से
+      अन्य किसानों के साथ अपनी उपज को एकत्र करें।
+    {% else %}
+      Combine produce with other farmers through a
+      Farmer Producer Organization (FPO) to fulfill large buyer demand.
+    {% endif %}
+  </p>
+
+</div>
+
+
+<!-- ================= FILTER ================= -->
+
+<div class="card">
+
+  <form method="GET"
+        action="{{ url_for('fpo') }}"
+        class="form-row"
+        style="align-items:flex-end;">
+
+    <div class="form-group">
+
+      <label for="crop">
+        {% if language == 'Hindi' %}
+          फसल
+        {% else %}
+          Crop
+        {% endif %}
+      </label>
+
+      <select class="form-control"
+              id="crop"
+              name="crop"
+              onchange="this.form.submit()">
+
+        {% for c in crops %}
+
+          <option value="{{ c }}"
+                  {% if selected_crop == c %}selected{% endif %}>
+
+            {% if language == 'Hindi' %}
+
+              {{
+                {
+                  'Tomato':'टमाटर',
+                  'Onion':'प्याज़',
+                  'Potato':'आलू',
+                  'Wheat':'गेहूं',
+                  'Rice':'चावल',
+                  'Maize':'मक्का',
+                  'Cotton':'कपास',
+                  'Sugarcane':'गन्ना',
+                  'Mustard':'सरसों',
+                  'Soybean':'सोयाबीन',
+                  'Peas':'मटर',
+                  'Carrot':'गाजर',
+                  'Cabbage':'पत्तागोभी',
+                  'Cauliflower':'फूलगोभी'
+                }.get(c, c)
+              }}
+
+            {% else %}
+
+              {{ c }}
+
+            {% endif %}
+
+          </option>
+
+        {% endfor %}
+
+      </select>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="buyer_demand">
+
+        {% if language == 'Hindi' %}
+          खरीदार की मांग (क्विंटल)
+        {% else %}
+          Buyer Demand (Quintals)
+        {% endif %}
+
+      </label>
+
+      <input type="number"
+             class="form-control"
+             id="buyer_demand"
+             name="buyer_demand"
+             min="1"
+             step="1"
+             value="{{ buyer_demand|int }}">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <button type="submit" class="btn btn-primary">
+
+        {% if language == 'Hindi' %}
+          पुनर्गणना करें
+        {% else %}
+          Recalculate
+        {% endif %}
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>
+
+
+<!-- ================= JOIN FPO ================= -->
+
+{% if can_join and not already_joined %}
+
+<div class="card text-center" style="margin-top:18px;">
+
+  <p style="color:var(--text-muted); margin-bottom:12px;">
+
+    {% if language == 'Hindi' %}
+
+      इस फसल के लिए आपकी सक्रिय खोज है।
+      क्या आप अपनी उपज को इस FPO समूह में जोड़ना चाहते हैं?
+
+    {% else %}
+
+      You have an active search for this crop.
+      Want to add your produce to this FPO group?
+
+    {% endif %}
+
+  </p>
+
+
+  <form method="POST" action="{{ url_for('fpo') }}">
+
+    <input type="hidden"
+           name="crop"
+           value="{{ selected_crop }}">
+
+    <input type="hidden"
+           name="buyer_demand"
+           value="{{ buyer_demand|int }}">
+
+    <input type="hidden"
+           name="join_fpo"
+           value="yes">
+
+
+    <button type="submit" class="btn btn-accent">
+
+      {% if language == 'Hindi' %}
+        अपनी उपज के साथ FPO में शामिल हों
+      {% else %}
+        Join FPO with My Produce
+      {% endif %}
+
+    </button>
+
+  </form>
+
+</div>
+
+{% endif %}
+
+
+<!-- ================= SUMMARY ================= -->
+
+<div class="fpo-summary">
+
+  <div class="stat-box">
+
+    <div class="label">
+
+      {% if language == 'Hindi' %}
+        उपलब्ध मात्रा
+      {% else %}
+        Available Quantity
+      {% endif %}
+
+    </div>
+
+    <div class="value">
+
+      {{ total_quantity }}
+
+      {% if language == 'Hindi' %}
+        क्विंटल
+      {% else %}
+        Quintals
+      {% endif %}
+
+    </div>
+
+  </div>
+
+
+  <div class="stat-box">
+
+    <div class="label">
+
+      {% if language == 'Hindi' %}
+        खरीदार की मांग
+      {% else %}
+        Buyer Demand
+      {% endif %}
+
+    </div>
+
+    <div class="value">
+
+      {{ buyer_demand|int }}
+
+      {% if language == 'Hindi' %}
+        क्विंटल
+      {% else %}
+        Quintals
+      {% endif %}
+
+    </div>
+
+  </div>
+
+
+  <div class="stat-box">
+
+    <div class="label">
+
+      {% if language == 'Hindi' %}
+        योगदान करने वाले किसान
+      {% else %}
+        Farmers Contributing
+      {% endif %}
+
+    </div>
+
+    <div class="value">
+      {{ farmers|length }}
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= PROGRESS ================= -->
+
+<div class="progress-bar-bg">
+
+  <div
+    class="progress-bar-fill"
+    style="
+      width:
+      {{ [
+          (total_quantity / buyer_demand * 100)
+          if buyer_demand else 0,
+          100
+        ] | min
+      }}%;
+    "
+  ></div>
+
+</div>
+
+
+<!-- ================= FPO MESSAGE ================= -->
+
+<div class="fpo-message-box {{ 'fulfilled' if fulfilled else 'shortfall' }}">
+
+  {% if language == 'Hindi' %}
+
+    {% if fulfilled %}
+      खरीदार की मांग पूरी करने के लिए पर्याप्त उपज उपलब्ध है।
+    {% else %}
+      खरीदार की मांग पूरी करने के लिए अतिरिक्त उपज की आवश्यकता है।
+    {% endif %}
+
+  {% else %}
+
+    {{ fpo_message }}
+
+  {% endif %}
+
+</div>
+
+
+<!-- ================= FARMERS ================= -->
+
+<h2 class="section-title">
+
+  {% if language == 'Hindi' %}
+    योगदान करने वाले किसान
+    ({{ 
+      {
+        'Tomato':'टमाटर',
+        'Onion':'प्याज़',
+        'Potato':'आलू',
+        'Wheat':'गेहूं',
+        'Rice':'चावल',
+        'Maize':'मक्का',
+        'Cotton':'कपास',
+        'Sugarcane':'गन्ना',
+        'Mustard':'सरसों',
+        'Soybean':'सोयाबीन',
+        'Peas':'मटर',
+        'Carrot':'गाजर',
+        'Cabbage':'पत्तागोभी',
+        'Cauliflower':'फूलगोभी'
+      }.get(selected_crop, selected_crop)
+    }})
+  {% else %}
+    Contributing Farmers ({{ selected_crop }})
+  {% endif %}
+
+</h2>
+
+
+{% if farmers %}
+
+<div class="table-wrap">
+
+  <table>
+
+    <thead>
+
+      <tr>
+
+        <th>
+          {% if language == 'Hindi' %}
+            किसान
+          {% else %}
+            Farmer
+          {% endif %}
+        </th>
+
+        <th>
+          {% if language == 'Hindi' %}
+            फसल
+          {% else %}
+            Crop
+          {% endif %}
+        </th>
+
+        <th>
+          {% if language == 'Hindi' %}
+            मात्रा (क्विंटल)
+          {% else %}
+            Quantity (Quintals)
+          {% endif %}
+        </th>
+
+        <th>
+          {% if language == 'Hindi' %}
+            गुणवत्ता
+          {% else %}
+            Quality
+          {% endif %}
+        </th>
+
+        <th>
+          {% if language == 'Hindi' %}
+            स्थान
+          {% else %}
+            Location
+          {% endif %}
+        </th>
+
+      </tr>
+
+    </thead>
+
+
+    <tbody>
+
+      {% for f in farmers %}
+
+      <tr>
+
+        <td>
+          {{ f.Farmer_Name }} ({{ f.Farmer_ID }})
+        </td>
+
+
+        <td>
+
+          {% if language == 'Hindi' %}
+
+            {{
+              {
+                'Tomato':'टमाटर',
+                'Onion':'प्याज़',
+                'Potato':'आलू',
+                'Wheat':'गेहूं',
+                'Rice':'चावल',
+                'Maize':'मक्का',
+                'Cotton':'कपास',
+                'Sugarcane':'गन्ना',
+                'Mustard':'सरसों',
+                'Soybean':'सोयाबीन',
+                'Peas':'मटर',
+                'Carrot':'गाजर',
+                'Cabbage':'पत्तागोभी',
+                'Cauliflower':'फूलगोभी'
+              }.get(f.Crop, f.Crop)
+            }}
+
+          {% else %}
+
+            {{ f.Crop }}
+
+          {% endif %}
+
+        </td>
+
+
+        <td>
+
+          {{ f.Quantity }}
+
+        </td>
+
+
+        <td>
+
+          {% if language == 'Hindi' %}
+
+            {{
+              {
+                'Grade A':'ग्रेड A',
+                'Grade B':'ग्रेड B',
+                'Grade C':'ग्रेड C',
+                'Premium':'प्रीमियम',
+                'Standard':'मानक',
+                'Average':'औसत',
+                'Good':'अच्छी',
+                'Poor':'निम्न'
+              }.get(f.Quality, f.Quality)
+            }}
+
+          {% else %}
+
+            {{ f.Quality }}
+
+          {% endif %}
+
+        </td>
+
+
+        <td>
+          {{ f.Location }}
+        </td>
+
+      </tr>
+
+      {% endfor %}
+
+    </tbody>
+
+  </table>
+
+</div>
+
+
+{% else %}
+
+<div class="alert alert-warning">
+
+  {% if language == 'Hindi' %}
+
+    इस फसल के लिए वर्तमान में कोई किसान पंजीकृत नहीं है।
+
+  {% else %}
+
+    No farmers currently registered for this crop.
+
+  {% endif %}
+
+</div>
+
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}MarketMinds - Smarter Markets. Better Decisions for Farmers.{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>MarketMinds</h1>
+  <p class="tagline">Smarter Markets. Better Decisions for Farmers.</p>
+  <p class="desc">
+    MarketMinds helps farmers identify the best market, best buyer, and best time to sell crops
+    using market intelligence, price forecasting, logistics costs, and smart recommendations.
+  </p>
+  <div class="hero-actions">
+    {% if current_farmer %}
+      <a href="{{ url_for('dashboard') }}" class="btn btn-accent">Get Started</a>
+      <a href="{{ url_for('market') if session.get('farmer_input') else url_for('dashboard') }}" class="btn btn-outline">Explore Markets</a>
+    {% else %}
+      <a href="{{ url_for('register') }}" class="btn btn-accent">Get Started</a>
+      <a href="{{ url_for('login') }}" class="btn btn-outline">Explore Markets</a>
+    {% endif %}
+  </div>
+</section>
+
+<h2 class="section-title text-center">What MarketMinds Offers</h2>
+<div class="card-grid">
+  <div class="card feature-card">
+    <span class="icon">📊</span>
+    <h3>Market Price Intelligence</h3>
+    <p>Live and historical mandi prices across multiple markets for your crop, in one place.</p>
+  </div>
+  <div class="card feature-card">
+    <span class="icon">🤖</span>
+    <h3>AI Price Forecasting</h3>
+    <p>A trained machine learning model predicts near-term prices, with a safe fallback if the model is unavailable.</p>
+  </div>
+  <div class="card feature-card">
+    <span class="icon">💰</span>
+    <h3>Smart Profit Recommendation</h3>
+    <p>We rank markets by expected NET PROFIT — revenue minus transport, storage, and other costs — not just price.</p>
+  </div>
+  <div class="card feature-card">
+    <span class="icon">⏳</span>
+    <h3>Sell Now vs Wait</h3>
+    <p>A transparent, calculation-backed decision on whether to sell today or hold for a better price.</p>
+  </div>
+  <div class="card feature-card">
+    <span class="icon">🤝</span>
+    <h3>Buyer Matching</h3>
+    <p>A weighted, explainable scoring system matches you with the most suitable buyers for your crop.</p>
+  </div>
+  <div class="card feature-card">
+    <span class="icon">🌾</span>
+    <h3>FPO Aggregation</h3>
+    <p>See how combining produce with other farmers through an FPO can meet large buyer demand.</p>
+  </div>
+</div>
+
+<h2 class="section-title text-center">How It Works</h2>
+<div class="flow-steps">
+  <div class="flow-step">Farmer Input</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step">Market Analysis</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step">AI Prediction</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step">Profit Calculation</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step">Smart Recommendation</div>
+</div>
+
+<div class="text-center" style="margin-top:30px;">
+  {% if current_farmer %}
+    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Start Your Market Search</a>
+  {% else %}
+    <a href="{{ url_for('register') }}" class="btn btn-primary">Create Your Free Account</a>
+  {% endif %}
+</div>
+{% endblock %}

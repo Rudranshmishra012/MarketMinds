@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="{{ 'hi' if language == 'Hindi' else 'en' }}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{% block title %}MarketMinds{% endblock %}</title>
+
+  <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+  <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>">
+
+  {% block head %}{% endblock %}
+</head>
+
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+
+  <nav class="navbar">
+    <div class="nav-container">
+
+      <a href="{{ url_for('home') }}" class="nav-brand">
+        <span class="leaf">🌾</span> MarketMinds
+      </a>
+
+      <button class="nav-toggle" aria-label="{% if language == 'Hindi' %}नेविगेशन खोलें{% else %}Toggle navigation{% endif %}">
+        ☰
+      </button>
+
+      <ul class="nav-links">
+
+        {% if current_farmer %}
+
+          <!-- Dashboard -->
+          <li>
+            <a href="{{ url_for('dashboard') }}"
+               class="{{ 'active' if request.endpoint == 'dashboard' }}">
+
+              {% if language == 'Hindi' %}
+                डैशबोर्ड
+              {% else %}
+                Dashboard
+              {% endif %}
+
+            </a>
+          </li>
+
+          <!-- Markets -->
+          <li>
+            <a href="{{ url_for('market') }}"
+               class="{{ 'active' if request.endpoint == 'market' }}">
+
+              {% if language == 'Hindi' %}
+                बाज़ार
+              {% else %}
+                Markets
+              {% endif %}
+
+            </a>
+          </li>
+
+          <!-- Recommendation -->
+          <li>
+            <a href="{{ url_for('recommendation') }}"
+               class="{{ 'active' if request.endpoint == 'recommendation' }}">
+
+              {% if language == 'Hindi' %}
+                सिफारिश
+              {% else %}
+                Recommendation
+              {% endif %}
+
+            </a>
+          </li>
+
+          <!-- Buyers -->
+          <li>
+            <a href="{{ url_for('buyers') }}"
+               class="{{ 'active' if request.endpoint == 'buyers' }}">
+
+              {% if language == 'Hindi' %}
+                खरीदार
+              {% else %}
+                Buyers
+              {% endif %}
+
+            </a>
+          </li>
+
+          <!-- FPO -->
+          <li>
+            <a href="{{ url_for('fpo') }}"
+               class="{{ 'active' if request.endpoint == 'fpo' }}">
+
+              FPO
+
+            </a>
+          </li>
+
+          <!-- History -->
+          <li>
+            <a href="{{ url_for('history') }}"
+               class="{{ 'active' if request.endpoint == 'history' }}">
+
+              {% if language == 'Hindi' %}
+                इतिहास
+              {% else %}
+                History
+              {% endif %}
+
+            </a>
+          </li>
+
+          <!-- Profile -->
+          <li>
+            <a href="{{ url_for('profile') }}"
+               class="{{ 'active' if request.endpoint == 'profile' }}">
+
+              👤 {{ current_farmer.full_name.split(' ')[0] }}
+
+            </a>
+          </li>
+
+          <!-- Logout -->
+          <li>
+            <a href="{{ url_for('logout') }}">
+
+              {% if language == 'Hindi' %}
+                लॉग आउट
+              {% else %}
+                Logout
+              {% endif %}
+
+            </a>
+          </li>
+
+        {% else %}
+
+          <!-- Home -->
+          <li>
+            <a href="{{ url_for('home') }}"
+               class="{{ 'active' if request.endpoint == 'home' }}">
+
+              {% if language == 'Hindi' %}
+                होम
+              {% else %}
+                Home
+              {% endif %}
+
+            </a>
+          </li>
+
+          <!-- About -->
+          <li>
+            <a href="{{ url_for('about') }}"
+               class="{{ 'active' if request.endpoint == 'about' }}">
+
+              {% if language == 'Hindi' %}
+                हमारे बारे में
+              {% else %}
+                About
+              {% endif %}
+
+            </a>
+          </li>
+
+          <!-- Login -->
+          <li>
+            <a href="{{ url_for('login') }}"
+               class="{{ 'active' if request.endpoint == 'login' }}">
+
+              {% if language == 'Hindi' %}
+                लॉग इन
+              {% else %}
+                Login
+              {% endif %}
+
+            </a>
+          </li>
+
+          <!-- Register -->
+          <li>
+            <a href="{{ url_for('register') }}"
+               class="btn btn-primary"
+               style="padding:8px 16px;">
+
+              {% if language == 'Hindi' %}
+                रजिस्टर
+              {% else %}
+                Register
+              {% endif %}
+
+            </a>
+          </li>
+
+        {% endif %}
+
+      </ul>
+
+    </div>
+  </nav>
+
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+
+  <main>
+    <div class="container">
+
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+          {% for category, message in messages %}
+
+            <div class="alert alert-{{ category }}">
+              {{ message }}
+            </div>
+
+          {% endfor %}
+
+        {% endif %}
+
+      {% endwith %}
+
+
+      <!-- Error Message -->
+      {% if error_message %}
+
+        <div class="alert alert-danger">
+          {{ error_message }}
+        </div>
+
+        <p>
+          <a href="{{ url_for('home') }}" class="btn btn-primary">
+
+            {% if language == 'Hindi' %}
+              होम पर वापस जाएं
+            {% else %}
+              Return Home
+            {% endif %}
+
+          </a>
+        </p>
+
+      {% endif %}
+
+
+      <!-- Individual Page Content -->
+      {% block content %}{% endblock %}
+
+    </div>
+  </main>
+
+  
+
+  <!-- ==================== SCRIPTS ==================== -->
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+  {% block scripts %}{% endblock %}
+
+</body>
+</html>

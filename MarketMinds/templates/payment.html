@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarketMinds — Scan to Pay</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{
+    --green-900:#0f4d33;
+    --green-700:#166a45;
+    --green-600:#1c7a4f;
+    --green-100:#e7f3ec;
+    --green-50:#f4faf7;
+    --ink:#1f2a24;
+    --muted:#6b7a72;
+    --line:#e3ece6;
+    --page-bg:#f2f6f4;
+    --amber:#f2a93b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--page-bg);
+    color:var(--ink);
+  }
+ 
+  /* ---- Nav ---- */
+  .navbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:#fff;
+    padding:16px 40px;
+    border-bottom:1px solid var(--line);
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+    font-size:20px;
+    color:var(--green-900);
+  }
+  .brand-mark{
+    width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .nav-links{
+    display:flex;
+    gap:34px;
+    list-style:none;
+    margin:0;padding:0;
+  }
+  .nav-links li{
+    font-size:15px;
+    color:#5b6a62;
+    cursor:pointer;
+  }
+  .nav-user{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:15px;
+    color:#2b352f;
+  }
+ 
+  /* ---- Card ---- */
+  .wrap{
+    display:flex;
+    justify-content:center;
+    padding:48px 20px 80px;
+  }
+  .card{
+    background:#fff;
+    width:100%;
+    max-width:660px;
+    border-radius:18px;
+    box-shadow:0 1px 2px rgba(20,40,30,.04), 0 12px 32px rgba(20,40,30,.06);
+    padding:44px 48px 40px;
+    text-align:center;
+  }
+  .icon-badge{
+    width:52px;height:52px;
+    border-radius:50%;
+    background:var(--green-700);
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 18px;
+  }
+  h1{
+    font-size:30px;
+    margin:0 0 8px;
+    color:var(--green-900);
+  }
+  .subtitle{
+    color:var(--muted);
+    font-size:15px;
+    margin:0 0 28px;
+  }
+ 
+  .qr-frame{
+    width:280px;
+    margin:0 auto 18px;
+    padding:18px;
+    border:1px solid var(--green-100);
+    border-radius:16px;
+    background:#fbfdfc;
+  }
+  #qrcode{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+  }
+  #qrcode img, #qrcode canvas{
+    border-radius:6px;
+  }
+  .qr-logo{
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:56px;height:56px;
+    background:#fff;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 0 4px #fff;
+  }
+  .merchant-name{
+    color:var(--green-900);
+    font-size:20px;
+    font-weight:700;
+    margin:6px 0 26px;
+  }
+ 
+  .notice{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    background:var(--green-50);
+    border:1px solid var(--green-100);
+    border-radius:12px;
+    padding:14px 18px;
+    text-align:left;
+    margin-bottom:22px;
+  }
+  .notice-icon{
+    width:22px;height:22px;
+    border-radius:50%;
+    background:var(--green-700);
+    flex:0 0 auto;
+    display:flex;align-items:center;justify-content:center;
+    margin-top:1px;
+  }
+  .notice-title{
+    color:var(--green-800,#155a3a);
+    font-weight:600;
+    font-size:14.5px;
+  }
+  .notice-sub{
+    color:var(--muted);
+    font-size:13.5px;
+    margin-top:2px;
+  }
+ 
+  .details{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    background:var(--green-50);
+    border:1px solid var(--green-100);
+    border-radius:12px;
+    padding:18px 22px;
+    margin-bottom:26px;
+    text-align:left;
+  }
+  .details div + div{
+    border-left:1px solid var(--green-100);
+    padding-left:20px;
+  }
+  .details dt{
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:4px;
+  }
+  .details dd{
+    margin:0;
+    font-weight:600;
+    font-size:15px;
+    color:var(--ink);
+  }
+ 
+  .back-btn{
+    width:100%;
+    background:var(--green-700);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:15px 20px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    transition:background .15s ease;
+  }
+  .back-btn:hover{ background:var(--green-900); }
+ 
+  @media (max-width:560px){
+    .navbar{padding:14px 18px;}
+    .nav-links{display:none;}
+    .card{padding:32px 22px 28px;}
+    .details{grid-template-columns:1fr; gap:14px;}
+    .details div + div{border-left:none;border-top:1px solid var(--green-100);padding-left:0;padding-top:12px;}
+    .qr-frame{width:100%; max-width:280px;}
+  }
+</style>
+</head>
+<body>
+ 
+  <nav class="navbar">
+    <div class="brand">
+      <span class="brand-mark">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+          <path d="M12 21c0-6 4-9 8-10-1 5-3 9-8 10Z" fill="#1c7a4f"/>
+          <path d="M12 21c0-7-3-11-8-13 0 6 2 11 8 13Z" fill="#f2a93b"/>
+        </svg>
+      </span>
+      MarketMinds
+    </div>
+    <ul class="nav-links">
+      <li>Dashboard</li>
+      <li>Markets</li>
+      <li>Recommendation</li>
+      <li>Buyers</li>
+      <li>FPO</li>
+      <li>History</li>
+    </ul>
+    
+  </nav>
+ 
+  <div class="wrap">
+    <div class="card">
+      <div class="icon-badge">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 3H4a1 1 0 0 0-1 1v3"/><path d="M17 3h3a1 1 0 0 1 1 1v3"/>
+          <path d="M7 21H4a1 1 0 0 1-1-1v-3"/><path d="M17 21h3a1 1 0 0 0 1-1v-3"/>
+          <rect x="9" y="9" width="6" height="6"/>
+        </svg>
+      </div>
+ 
+      <h1>Scan to Pay</h1>
+      <p class="subtitle">Complete your payment to confirm the deal with this buyer.</p>
+ 
+      <div class="qr-frame">
+        <div id="qrcode"></div>
+      </div>
+      <div class="merchant-name">MarketMinds</div>
+      
+  <script>
+    // Replace with real UPI details from your backend
+    const bestBuyer = {
+      upi_id: "marketminds@upi",
+      price_offered: 24500,
+      quantity_required: 12
+    };
+ 
+    const upiLink = `upi://pay?pa=${encodeURIComponent(bestBuyer.upi_id)}` +
+                     `&pn=${encodeURIComponent('MarketMinds')}` +
+                     `&am=${encodeURIComponent(bestBuyer.price_offered)}` +
+                     `&cu=INR` +
+                     `&tn=${encodeURIComponent('Payment for ' + bestBuyer.quantity_required + ' qtl via MarketMinds')}`;
+ 
+    // Fixed pixel size given to the library — CSS above then scales it to fit the frame
+    new QRCode(document.getElementById("qrcode"), {
+      text: upiLink,
+      width: 300,
+      height: 300,
+      colorDark: "#0f4d33",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
+    });
+ 
+    // Add the centered logo badge after the QR renders
+    setTimeout(() => {
+      const logo = document.createElement('div');
+      logo.className = 'qr-logo';
+      logo.innerHTML = `<svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 21c0-6 4-9 8-10-1 5-3 9-8 10Z" fill="#1c7a4f"/>
+          <path d="M12 21c0-7-3-11-8-13 0 6 2 11 8 13Z" fill="#f2a93b"/>
+        </svg>`;
+      document.getElementById('qrcode').appendChild(logo);
+    }, 50);
+  </script>
+      
+ 
+      <div class="notice">
+        <span class="notice-icon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+        <div>
+          <div class="notice-title">Scan the QR code with any UPI app</div>
+          <div class="notice-sub">(Google Pay, PhonePe, Paytm, BHIM, etc.)</div>
+        </div>
+      </div>
+ 
+      <dl class="details">
+        
+ 
+<div style="text-align: center; margin-top: 20px;">
+    <button class="back-btn" onclick="window.location.href='/buyers'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+             stroke="#fff" stroke-width="4" stroke-linecap="round"
+             stroke-linejoin="round">
+            <path d="M19 12H5"/>
+            <path d="M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Buyer Matching
+    </button>
+</div>
+    </div>
+  </div>
+ 
+
+</body>
+</html>
+ 

@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if language == 'Hindi' %}
+        खरीदार विवरण - MarketMinds
+    {% else %}
+        Buyer Details - MarketMinds
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% set crop_names = {
+    'Tomato':'टमाटर','Onion':'प्याज़','Potato':'आलू','Wheat':'गेहूं','Rice':'चावल',
+    'Maize':'मक्का','Cotton':'कपास','Sugarcane':'गन्ना','Mustard':'सरसों','Soybean':'सोयाबीन',
+    'Peas':'मटर','Carrot':'गाजर','Cabbage':'पत्तागोभी','Cauliflower':'फूलगोभी'
+} %}
+
+<div class="page-header">
+    <h1>
+        {% if language == 'Hindi' %}
+            खरीदार विवरण
+        {% else %}
+            Buyer Details
+        {% endif %}
+    </h1>
+
+</div>
+
+<div class="recommend-hero">
+    <div class="label" style="color:var(--text-muted); font-weight:600; font-size:0.85rem; text-transform:uppercase;">
+        {% if language == 'Hindi' %}खरीदार आईडी{% else %}Buyer ID{% endif %}: {{ buyer.Buyer_ID }}
+    </div>
+
+    <div class="best-market-name">
+        {{ buyer.Buyer_Name }}
+        {% if buyer.Verified %}
+            <span class="badge badge-success">
+                {% if language == 'Hindi' %}सत्यापित{% else %}Verified{% endif %}
+            </span>
+        {% else %}
+            <span class="badge badge-warning">
+                {% if language == 'Hindi' %}असत्यापित{% else %}Unverified{% endif %}
+            </span>
+        {% endif %}
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-box">
+            <div class="label">{% if language == 'Hindi' %}फसल{% else %}Crop{% endif %}</div>
+            <div class="value">
+                {% if language == 'Hindi' %}{{ crop_names.get(buyer.Crop, buyer.Crop) }}{% else %}{{ buyer.Crop }}{% endif %}
+            </div>
+        </div>
+        <div class="stat-box">
+            <div class="label">{% if language == 'Hindi' %}आवश्यक मात्रा{% else %}Quantity Required{% endif %}</div>
+            <div class="value">{{ buyer.Quantity_Required }} {% if language == 'Hindi' %}क्विंटल{% else %}qtl{% endif %}</div>
+        </div>
+        <div class="stat-box">
+            <div class="label">{% if language == 'Hindi' %}आवश्यक गुणवत्ता{% else %}Quality Required{% endif %}</div>
+            <div class="value">{{ buyer.Quality }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="label">{% if language == 'Hindi' %}प्रस्तावित कीमत{% else %}Price Offered{% endif %}</div>
+            <div class="value">₹{{ "%.2f"|format(buyer.Price_Offered) }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="label">{% if language == 'Hindi' %}स्थान{% else %}Location{% endif %}</div>
+            <div class="value" style="font-size:1rem;">{{ buyer.Location }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="label">{% if language == 'Hindi' %}दूरी{% else %}Distance{% endif %}</div>
+            <div class="value">{{ "%.0f"|format(buyer.Distance_KM) }} {% if language == 'Hindi' %}किमी{% else %}km{% endif %}</div>
+        </div>
+        <div class="stat-box">
+            <div class="label">{% if language == 'Hindi' %}भुगतान स्कोर{% else %}Payment Score{% endif %}</div>
+            <div class="value">{{ buyer.Payment_Score }}/100</div>
+        </div>
+        <div class="stat-box">
+            <div class="label">{% if language == 'Hindi' %}विवाद स्कोर{% else %}Dispute Score{% endif %}</div>
+            <div class="value">{{ buyer.Dispute_Score }}/100</div>
+        </div>
+    </div>
+</div>
+
+{# ---------- Contact details ---------- #}
+<h2 class="section-title">
+    {% if language == 'Hindi' %}संपर्क विवरण{% else %}Contact Details{% endif %}
+</h2>
+<div class="card">
+    {% if buyer.Contact_Phone or buyer.Contact_Email %}
+    <div class="stat-grid">
+        <div class="stat-box">
+            <div class="label">{% if language == 'Hindi' %}फ़ोन नंबर{% else %}Phone Number{% endif %}</div>
+            <div class="value" style="font-size:1.05rem;">
+                {% if buyer.Contact_Phone %}
+                    <a href="tel:{{ buyer.Contact_Phone|replace(' ', '') }}">{{ buyer.Contact_Phone }}</a>
+                {% else %}&mdash;{% endif %}
+            </div>
+        </div>
+        <div class="stat-box">
+            <div class="label">{% if language == 'Hindi' %}ईमेल{% else %}Email{% endif %}</div>
+            <div class="value" style="font-size:1.05rem; word-break:break-all;">
+                {% if buyer.Contact_Email %}
+                    <a href="mailto:{{ buyer.Contact_Email }}">{{ buyer.Contact_Email }}</a>
+                {% else %}&mdash;{% endif %}
+            </div>
+        </div>
+    </div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:4px;">
+        {% if buyer.Contact_Phone %}
+        
+        {% endif %}
+        {% if buyer.Contact_Email %}
+       
+        {% endif %}
+    </div>
+
+    {% else %}
+    <p style="color:var(--text-muted); margin:0;">
+        {% if language == 'Hindi' %}
+            इस खरीदार के लिए कोई संपर्क विवरण उपलब्ध नहीं है।
+        {% else %}
+            No contact details are available for this buyer.
+        {% endif %}
+    </p>
+    {% endif %}
+</div>
+
+{% if match_info %}
+<h2 class="section-title">
+    {% if language == 'Hindi' %}
+        इस खरीदार के साथ आपका मिलान
+    {% else %}
+        Your Match With This Buyer
+    {% endif %}
+</h2>
+<div class="card">
+    <div class="stat-grid">
+        <div class="stat-box profit">
+            <div class="label">{% if language == 'Hindi' %}मिलान स्कोर{% else %}Match Score{% endif %}</div>
+            <div class="value">{{ "%.2f"|format(match_info.match_score) }}/100</div>
+        </div>
+        <div class="stat-box">
+            <div class="label">{% if language == 'Hindi' %}विश्वसनीयता स्कोर{% else %}Reliability Score{% endif %}</div>
+            <div class="value">{{ "%.1f"|format(match_info.reliability_score) }}/100</div>
+        </div>
+    </div>
+
+    <div class="score-breakdown">
+        <h3 style="margin-top:20px; font-size:1rem; color:var(--primary-dark);">
+            {% if language == 'Hindi' %}स्कोर विवरण{% else %}Score Breakdown{% endif %}
+        </h3>
+        {% for label, label_hi, max_pts, key in [
+            ("Crop Match", "फसल मिलान", 25, "crop_match"),
+            ("Quality Match", "गुणवत्ता मिलान", 15, "quality_match"),
+            ("Quantity Compat.", "मात्रा अनुकूलता", 15, "quantity_compat"),
+            ("Price Score", "कीमत स्कोर", 20, "price_score"),
+            ("Distance Score", "दूरी स्कोर", 10, "distance_score"),
+            ("Reliability", "विश्वसनीयता", 15, "reliability_score")
+        ] %}
+        <div class="score-row">
+            <span>{% if language == 'Hindi' %}{{ label_hi }}{% else %}{{ label }}{% endif %}</span>
+            <div class="score-bar-bg">
+                <div class="score-bar-fill" style="width:{{ (match_info.score_breakdown[key] / max_pts * 100) if max_pts else 0 }}%"></div>
+            </div>
+            <span>{{ match_info.score_breakdown[key] }}/{{ max_pts }}</span>
+        </div>
+        {% endfor %}
+    </div>
+
+    <form method="POST" action="{{ url_for('contact_buyer', buyer_id=buyer.Buyer_ID) }}" style="margin-top:18px;">
+        <button type="submit" class="btn btn-accent">
+            {% if language == 'Hindi' %}
+                इस खरीदार से संपर्क करें
+            {% else %}
+                Contact This Buyer
+            {% endif %}
+        </button>
+    </form>
+
+</div>
+{% else %}
+<div class="data-note" style="margin-top:20px;">
+    {% if language == 'Hindi' %}
+        इस खरीदार के साथ अपना मिलान स्कोर देखने के लिए, पहले
+        <a href="{{ url_for('dashboard') }}">डैशबोर्ड</a> पर इसी फसल और गुणवत्ता के साथ खोज शुरू करें।
+    {% else %}
+        Start a crop search with a matching crop and quality on your
+        <a href="{{ url_for('dashboard') }}">Dashboard</a> to see your personalized match score with this buyer.
+    {% endif %}
+</div>
+{% endif %}
+
+<div class="text-center" style="margin-top:26px;">
+    <a href="{{ url_for('buyers') }}" class="btn btn-outline">
+        {% if language == 'Hindi' %}
+            खरीदार मिलान पर वापस जाएं
+        {% else %}
+            Back to Buyer Matching
+        {% endif %}
+    </a>
+</div>
+
+{% endblock %}
